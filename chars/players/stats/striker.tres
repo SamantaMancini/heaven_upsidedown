@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Stat" load_steps=2 format=3 uid="uid://7pcl2k4pm55d"]
+
+[ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="1_rgymm"]
+
+[resource]
+script = ExtResource("1_rgymm")
+name_char = "Felix"
+role = "Striker"
+stamina = 2.0
+will = 2
+control = 1
+actions = Array[String](["happy song", "happy story"])
+power = Array[int]([1, 3])
+stamina_consumed = Array[int]([1, 5])
+description = Array[String](["sing earns positive points", "a happy ending story that earns positive points"])
+type = Array[String](["attack", "attack"])

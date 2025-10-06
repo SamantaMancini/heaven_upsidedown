@@ -1,0 +1,257 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwxsurn25xrva"]
+
+[ext_resource type="Texture2D" uid="uid://dr6h8wuopg277" path="res://icon.svg" id="1_2c621"]
+[ext_resource type="Script" uid="uid://dsw6b2v4suc2i" path="res://chars/players/scripts/player.gd" id="1_7vu2r"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_7vu2r")
+
+[node name="Button" type="Button" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+offset_left = 571.0
+offset_top = 281.0
+offset_right = 699.0
+offset_bottom = 408.0
+toggle_mode = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(550, 340)
+texture = ExtResource("1_2c621")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Sprite2D"]
+
+[node name="Label" type="Label" parent="Sprite2D/CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -56.0
+offset_top = -78.0
+offset_right = -9.0
+offset_bottom = -55.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Sprite2D/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 350.0
+offset_top = 269.0
+offset_right = 882.0
+offset_bottom = 418.0
+
+[node name="Panel" type="Panel" parent="Sprite2D/CanvasLayer/Control"]
+offset_left = 4.0
+offset_top = 9.0
+offset_right = 129.0
+offset_bottom = 136.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel"]
+layout_mode = 1
+offset_right = 124.0
+offset_bottom = 126.0
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Role"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Stamina"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer/HBoxContainer3"]
+modulate = Color(0, 1, 0, 1)
+custom_minimum_size = Vector2(60, 10)
+layout_mode = 2
+max_value = 2.0
+rounded = true
+show_percentage = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label3" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Will:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label5" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Control:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label6" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="Panel" parent="Sprite2D/CanvasLayer/Control"]
+offset_left = 265.0
+offset_top = 9.0
+offset_right = 390.0
+offset_bottom = 136.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel2"]
+layout_mode = 1
+offset_right = 124.0
+offset_bottom = 126.0
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Button" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel2/VBoxContainer"]
+layout_mode = 2
+text = "Act"
+
+[node name="Rest" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel2/VBoxContainer"]
+layout_mode = 2
+text = "Rest"
+
+[node name="Flee" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel2/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Flee"
+
+[node name="Panel3" type="Panel" parent="Sprite2D/CanvasLayer/Control"]
+offset_left = 265.0
+offset_top = 9.0
+offset_right = 390.0
+offset_bottom = 136.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel3"]
+layout_mode = 1
+offset_right = 124.0
+offset_bottom = 126.0
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="skill1" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer"]
+layout_mode = 2
+
+[node name="skill2" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer"]
+layout_mode = 2
+text = "Skill 2"
+
+[node name="Button3" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Share"
+
+[node name="Button4" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="Panel5" type="Panel" parent="Sprite2D/CanvasLayer/Control"]
+offset_left = 399.0
+offset_top = 36.0
+offset_right = 524.0
+offset_bottom = 110.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel5"]
+layout_mode = 1
+offset_right = 128.0
+offset_bottom = 72.0
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel5/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="sta" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel5/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "sta:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="value_sta" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel5/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="power" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel5/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "power:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="value_power" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel5/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="description" type="Label" parent="Sprite2D/CanvasLayer/Control/Panel5/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "canta guadagna 
+punti positivi"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Panel4" type="Panel" parent="Sprite2D/CanvasLayer/Control"]
+offset_left = 265.0
+offset_top = 9.0
+offset_right = 390.0
+offset_bottom = 136.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel4"]
+layout_mode = 1
+offset_right = 124.0
+offset_bottom = 126.0
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="start" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel4/VBoxContainer"]
+layout_mode = 2
+text = "Start"
+
+[node name="cancel" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel4/VBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel2/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel2/VBoxContainer/Rest" to="." method="_on_rest_pressed"]
+[connection signal="mouse_entered" from="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer/skill1" to="." method="_on_skill_1_mouse_entered"]
+[connection signal="mouse_exited" from="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer/skill1" to="." method="_on_skill_1_mouse_exited"]
+[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer/skill1" to="." method="_on_skill_1_pressed"]
+[connection signal="mouse_entered" from="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer/skill2" to="." method="_on_skill_2_mouse_entered"]
+[connection signal="mouse_exited" from="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer/skill2" to="." method="_on_skill_2_mouse_exited"]
+[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer/skill2" to="." method="_on_skill_2_pressed"]
+[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel3/VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel4/VBoxContainer/start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel4/VBoxContainer/cancel" to="." method="_on_cancel_pressed"]

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Stat" load_steps=2 format=3 uid="uid://i30gl3l5mqyf"]
+
+[ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="1_3se0p"]
+
+[resource]
+script = ExtResource("1_3se0p")
+name_char = "Heart"
+role = "Curator"
+stamina = 2.0
+will = 1
+control = 1
+actions = Array[String](["Kiss", "Pat"])
+power = Array[float]([2.0, 1.0])
+stamina_consumed = Array[int]([2, 2])
+description = Array[String](["restores 1 stamina point", "a happy ending story that earns positive points"])
+type = Array[String](["curator", "curator"])

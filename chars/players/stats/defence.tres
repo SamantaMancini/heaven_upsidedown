@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Stat" load_steps=2 format=3 uid="uid://dvtk710t8shh7"]
+
+[ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="1_4eme5"]
+
+[resource]
+script = ExtResource("1_4eme5")
+name_char = "Trust"
+role = "Defence"
+stamina = 2.0
+will = 1
+control = 2
+actions = Array[String](["Trust shield", "Trust song"])
+power = Array[float]([3.0, 2.0])
+stamina_consumed = Array[int]([2, 1])
+description = Array[String](["adds 2 shield prevents next negative point", "sing earns positive points"])
+type = Array[String](["defence", "attack"])
