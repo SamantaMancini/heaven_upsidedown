@@ -9,6 +9,7 @@ id = "kiss"
 power = 1.0
 stamina_consumed = 2
 description = ""
+emotion = "love"
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]

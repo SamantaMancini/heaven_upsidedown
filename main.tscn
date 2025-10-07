@@ -8,6 +8,8 @@
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_h2yge")
+combination_1 = "happy trust love"
+combination_2 = "trust love"
 
 [node name="Player" parent="." instance=ExtResource("1_ig7tw")]
 position = Vector2(-333, 15)
@@ -51,12 +53,6 @@ offset_top = 9.0
 offset_right = 528.0
 offset_bottom = 83.0
 
-[node name="Panel4" parent="Player/Sprite2D/CanvasLayer/Control" index="4"]
-offset_left = 272.0
-offset_top = 8.0
-offset_right = 397.0
-offset_bottom = 135.0
-
 [node name="Player2" parent="." instance=ExtResource("1_ig7tw")]
 position = Vector2(245, 33)
 stats = ExtResource("4_1bvp3")
@@ -99,12 +95,6 @@ offset_top = 1.0
 offset_right = 527.0
 offset_bottom = 75.0
 
-[node name="Panel4" parent="Player2/Sprite2D/CanvasLayer/Control" index="4"]
-offset_left = 272.0
-offset_top = 0.0
-offset_right = 397.0
-offset_bottom = 127.0
-
 [node name="Player3" parent="." instance=ExtResource("1_ig7tw")]
 position = Vector2(-16, 206)
 stats = ExtResource("5_lquwl")
@@ -146,12 +136,6 @@ offset_left = 407.0
 offset_top = 9.0
 offset_right = 532.0
 offset_bottom = 83.0
-
-[node name="Panel4" parent="Player3/Sprite2D/CanvasLayer/Control" index="4"]
-offset_left = 274.0
-offset_top = 0.0
-offset_right = 399.0
-offset_bottom = 127.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(577, 326)
@@ -243,7 +227,28 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Button2" type="Button" parent="."]
+offset_left = 861.0
+offset_top = 571.0
+offset_right = 1133.0
+offset_bottom = 640.0
+text = "START"
+
+[node name="Button3" type="Button" parent="."]
+offset_left = 983.0
+offset_top = 532.0
+offset_right = 1132.0
+offset_bottom = 568.0
+
+[node name="Button4" type="Button" parent="."]
+offset_left = 983.0
+offset_top = 493.0
+offset_right = 1132.0
+offset_bottom = 529.0
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button4" to="." method="_on_button_4_pressed"]
 
 [editable path="Player"]
 [editable path="Player2"]

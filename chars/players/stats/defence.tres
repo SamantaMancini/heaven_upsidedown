@@ -9,6 +9,7 @@ id = "trust shield"
 power = 2.0
 stamina_consumed = 2
 description = ""
+emotion = "trust"
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [sub_resource type="Resource" id="Resource_8o3f5"]
@@ -17,6 +18,7 @@ id = "trust song"
 power = 2.0
 stamina_consumed = 1
 description = ""
+emotion = "trust"
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]

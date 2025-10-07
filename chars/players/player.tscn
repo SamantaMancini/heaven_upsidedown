@@ -207,28 +207,4 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="Panel4" type="Panel" parent="Sprite2D/CanvasLayer/Control"]
-layout_mode = 0
-offset_left = 265.0
-offset_top = 9.0
-offset_right = 390.0
-offset_bottom = 136.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Sprite2D/CanvasLayer/Control/Panel4"]
-layout_mode = 1
-offset_right = 124.0
-offset_bottom = 126.0
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="start" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel4/VBoxContainer"]
-layout_mode = 2
-text = "Start"
-
-[node name="cancel" type="Button" parent="Sprite2D/CanvasLayer/Control/Panel4/VBoxContainer"]
-layout_mode = 2
-text = "Cancel"
-
 [connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel3/VSkills/Button4" to="." method="_on_button_4_pressed"]
-[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel4/VBoxContainer/start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel4/VBoxContainer/cancel" to="." method="_on_cancel_pressed"]

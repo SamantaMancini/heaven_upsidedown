@@ -3,6 +3,9 @@ extends Node2D
 signal update_global_state(power: float)
 signal remove_global_state(power: float)
 signal add_shield(shield: float)
+signal add_stamina(power: float)
+signal combination(combination: String, power: float)
+signal start_process
 
 var actions : Dictionary = {}
 
