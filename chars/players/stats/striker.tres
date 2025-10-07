@@ -9,8 +9,6 @@ id = "happy song"
 power = 2.0
 stamina_consumed = 1
 description = ""
-more_stamina = 0.0
-shields = 0
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [sub_resource type="Resource" id="Resource_no0do"]
@@ -19,8 +17,6 @@ id = "happy story"
 power = 5.0
 stamina_consumed = 5
 description = ""
-more_stamina = 0.0
-shields = 0
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]

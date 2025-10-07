@@ -6,11 +6,9 @@
 [sub_resource type="Resource" id="Resource_gjom1"]
 script = ExtResource("2_gjom1")
 id = "trust shield"
-power = 0.0
+power = 2.0
 stamina_consumed = 2
 description = ""
-more_stamina = 0.0
-shields = 3
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [sub_resource type="Resource" id="Resource_8o3f5"]
@@ -19,8 +17,6 @@ id = "trust song"
 power = 2.0
 stamina_consumed = 1
 description = ""
-more_stamina = 0.0
-shields = 0
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]
