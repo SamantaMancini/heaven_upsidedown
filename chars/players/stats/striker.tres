@@ -1,6 +1,27 @@
-[gd_resource type="Resource" script_class="Stat" load_steps=2 format=3 uid="uid://7pcl2k4pm55d"]
+[gd_resource type="Resource" script_class="Stat" load_steps=5 format=3 uid="uid://7pcl2k4pm55d"]
 
 [ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="1_rgymm"]
+[ext_resource type="Script" uid="uid://wr0gogv12wnh" path="res://chars/players/stats/skill.gd" id="2_5ejaa"]
+
+[sub_resource type="Resource" id="Resource_5ejaa"]
+script = ExtResource("2_5ejaa")
+id = "happy song"
+power = 2.0
+stamina_consumed = 1
+description = ""
+more_stamina = 0.0
+shields = 0
+metadata/_custom_type_script = "uid://wr0gogv12wnh"
+
+[sub_resource type="Resource" id="Resource_no0do"]
+script = ExtResource("2_5ejaa")
+id = "happy story"
+power = 5.0
+stamina_consumed = 5
+description = ""
+more_stamina = 0.0
+shields = 0
+metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]
 script = ExtResource("1_rgymm")
@@ -9,8 +30,4 @@ role = "Striker"
 stamina = 2.0
 will = 2
 control = 1
-actions = Array[String](["happy song", "happy story"])
-power = Array[int]([1, 3])
-stamina_consumed = Array[int]([1, 5])
-description = Array[String](["sing earns positive points", "a happy ending story that earns positive points"])
-type = Array[String](["attack", "attack"])
+actions = Array[ExtResource("2_5ejaa")]([SubResource("Resource_5ejaa"), SubResource("Resource_no0do")])

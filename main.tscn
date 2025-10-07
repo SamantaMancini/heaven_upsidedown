@@ -28,33 +28,30 @@ offset_bottom = 435.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" parent="Player/Sprite2D/CanvasLayer/Control" index="0"]
-layout_mode = 0
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 125.0
 offset_bottom = 127.0
 
 [node name="Panel2" parent="Player/Sprite2D/CanvasLayer/Control" index="1"]
-layout_mode = 0
 offset_left = 273.0
 offset_top = 5.0
 offset_right = 398.0
 offset_bottom = 132.0
 
 [node name="Panel3" parent="Player/Sprite2D/CanvasLayer/Control" index="2"]
-layout_mode = 0
 offset_left = 273.0
+offset_top = 0.0
 offset_right = 398.0
+offset_bottom = 127.0
 
 [node name="Panel5" parent="Player/Sprite2D/CanvasLayer/Control" index="3"]
-layout_mode = 0
 offset_left = 403.0
 offset_top = 9.0
 offset_right = 528.0
 offset_bottom = 83.0
 
 [node name="Panel4" parent="Player/Sprite2D/CanvasLayer/Control" index="4"]
-layout_mode = 0
 offset_left = 272.0
 offset_top = 8.0
 offset_right = 397.0
@@ -79,35 +76,30 @@ offset_bottom = 447.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" parent="Player2/Sprite2D/CanvasLayer/Control" index="0"]
-layout_mode = 0
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 125.0
 offset_bottom = 127.0
 
 [node name="Panel2" parent="Player2/Sprite2D/CanvasLayer/Control" index="1"]
-layout_mode = 0
 offset_left = 269.0
 offset_top = 3.0
 offset_right = 394.0
 offset_bottom = 130.0
 
 [node name="Panel3" parent="Player2/Sprite2D/CanvasLayer/Control" index="2"]
-layout_mode = 0
 offset_left = 270.0
 offset_top = 5.0
 offset_right = 395.0
 offset_bottom = 132.0
 
 [node name="Panel5" parent="Player2/Sprite2D/CanvasLayer/Control" index="3"]
-layout_mode = 0
 offset_left = 402.0
 offset_top = 1.0
 offset_right = 527.0
 offset_bottom = 75.0
 
 [node name="Panel4" parent="Player2/Sprite2D/CanvasLayer/Control" index="4"]
-layout_mode = 0
 offset_left = 272.0
 offset_top = 0.0
 offset_right = 397.0
@@ -132,35 +124,30 @@ offset_bottom = 622.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" parent="Player3/Sprite2D/CanvasLayer/Control" index="0"]
-layout_mode = 0
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 125.0
 offset_bottom = 127.0
 
 [node name="Panel2" parent="Player3/Sprite2D/CanvasLayer/Control" index="1"]
-layout_mode = 0
 offset_left = 272.0
 offset_top = 8.0
 offset_right = 397.0
 offset_bottom = 135.0
 
 [node name="Panel3" parent="Player3/Sprite2D/CanvasLayer/Control" index="2"]
-layout_mode = 0
 offset_left = 274.0
 offset_top = 4.0
 offset_right = 399.0
 offset_bottom = 131.0
 
 [node name="Panel5" parent="Player3/Sprite2D/CanvasLayer/Control" index="3"]
-layout_mode = 0
 offset_left = 407.0
 offset_top = 9.0
 offset_right = 532.0
 offset_bottom = 83.0
 
 [node name="Panel4" parent="Player3/Sprite2D/CanvasLayer/Control" index="4"]
-layout_mode = 0
 offset_left = 274.0
 offset_top = 0.0
 offset_right = 399.0

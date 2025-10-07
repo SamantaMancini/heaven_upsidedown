@@ -9,8 +9,8 @@ var shields = 0
 func _ready() -> void:
 	label_3.text = str(start_num)
 	label_5.text = str(shields)
-	GlobalEvent.update_global_state.connect(add_points)
-	GlobalEvent.add_shield.connect(add_shield)
+	#GlobalEvent.update_global_state.connect(add_points)
+	#GlobalEvent.add_shield.connect(add_shield)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -22,12 +22,12 @@ func _process(delta: float) -> void:
 	label_3.text = str(start_num)
 	label_5.text = str(shields)
 	
-func add_points(value: float):
-	progress_bar.value += value
-	start_num += value
-
-func add_shield(shield: float):
-	shields += shield
+#func add_points(value: float):
+	#progress_bar.value += value
+	#start_num += value
+#
+#func add_shield(shield: float):
+	#shields += shield
 	
 func _on_button_pressed() -> void:
 	if shields == 0:

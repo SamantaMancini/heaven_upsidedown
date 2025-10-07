@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://b6my1sbgavnh1"]
+
+[ext_resource type="Script" uid="uid://wr0gogv12wnh" path="res://chars/players/stats/skill.gd" id="1_phd0k"]
+
+[resource]
+script = ExtResource("1_phd0k")
+id = ""
+power = 0.0
+stamina_consumed = 0
+description = ""
+more_stamina = 0.0
+shields = 0
