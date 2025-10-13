@@ -6,15 +6,6 @@
 [node name="Player" type="Node2D"]
 script = ExtResource("1_7vu2r")
 
-[node name="Button" type="Button" parent="."]
-visible = false
-modulate = Color(1, 1, 1, 0)
-offset_left = 571.0
-offset_top = 281.0
-offset_right = 699.0
-offset_bottom = 408.0
-toggle_mode = true
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(550, 340)
 texture = ExtResource("1_2c621")
@@ -206,5 +197,11 @@ punti positivi"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="Label" type="Label" parent="."]
+offset_left = 435.0
+offset_top = 95.0
+offset_right = 668.0
+offset_bottom = 225.0
 
 [connection signal="pressed" from="Sprite2D/CanvasLayer/Control/Panel3/VSkills/Button4" to="." method="_on_button_4_pressed"]

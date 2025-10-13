@@ -23,6 +23,7 @@ metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]
 script = ExtResource("1_4eme5")
+id = 1
 name_char = "Trust"
 role = "Defence"
 stamina = 2.0

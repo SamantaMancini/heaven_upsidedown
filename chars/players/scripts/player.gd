@@ -17,9 +17,13 @@ class_name Player
 @onready var description: Label = $Sprite2D/CanvasLayer/Control/Panel5/VBoxContainer/description
 
 
-var skill_consumed : Dictionary = {}
+var skill_consumed : Array = []
 var actions_button = ["Action", "Rest", "Flee"]
-
+var emotions = ""
+var action_id = null
+var stamina_cost = null
+var power_value = null
+var target_on = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -54,17 +58,23 @@ func _ready() -> void:
 			v_skills.add_child(new_button)
 			new_button.connect("pressed", Callable(self, "_on_skill_pressed").bind(action_id, new_button))
 
-	GlobalEvent.add_stamina.connect(add_stamina)
+	GlobalEvent.add_stamina.connect(add_stamina_player)
 	GlobalEvent.start_process.connect(_on_start_pressed)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
-	
-func add_stamina(stamina: float):
+		
+func add_stamina_group(stamina: float):
 	progress_bar.value += stamina
-	
+
+func add_stamina_player(stamina: float, id: int):
+	if id == stats.id:
+		progress_bar.value += stamina
+		print("Curato: ", id, " +", stamina)
+		
+		
 func _on_action_pressed(id: String, button: Button) -> void:
 	if id == "Action":
 		panel_2.hide()
@@ -74,6 +84,7 @@ func _on_action_pressed(id: String, button: Button) -> void:
 			progress_bar.max_value += 1
 			
 		progress_bar.value += 1
+		
 		if progress_bar.value >= 10:
 			button.disabled = true
 		else:
@@ -83,31 +94,27 @@ func _on_skill_pressed(id: String, button: Button) -> void:
 	panel_3.hide()
 	panel_2.show()
 	var selected_skill_data = null
+	
 	for skill in stats.actions:
 		if skill.id == id:
 			selected_skill_data = skill
 			
 	if selected_skill_data == null:
 		return
-	var current_sequence = skill_consumed.get("sequence", [])
+	
 	var current_skill_info = {
 		"id": selected_skill_data.id,
 		"sta": selected_skill_data.stamina_consumed,
 		"power": selected_skill_data.power,
 		"emotion": selected_skill_data.emotion
 	}
-	current_sequence.append(current_skill_info)
-	skill_consumed["sequence"] = current_sequence
 	
-	var current_combination = skill_consumed.get("combination", "")
-	
-	if current_combination.is_empty():
-		skill_consumed["combination"] = selected_skill_data.emotion
-	else:
-		skill_consumed["combination"] = current_combination + " , " + selected_skill_data.emotion
-	
-	print("Combinazione attuale:", skill_consumed["combination"])
-	print("Dati della sequenza:", skill_consumed["sequence"])
+	skill_consumed.append(current_skill_info)
+	emotions = current_skill_info["emotion"]
+	if selected_skill_data.id == "kiss":
+		target_on = true
+		
+	GlobalEvent.update_button.emit()
 	
 func _on_button_4_pressed() -> void:
 	if panel_3.is_visible_in_tree():
@@ -150,21 +157,30 @@ func _on_button_4_pressed() -> void:
 
 
 func _on_start_pressed() -> void:
-	if not skill_consumed.is_empty():
-		var action_id = skill_consumed["id"]
-		var power_value = skill_consumed["power"]
-		var stamina_cost = skill_consumed["sta"]
-		
-		progress_bar.value -= stamina_cost
-		if action_id != "kiss" and action_id != "trust shield":
-			GlobalEvent.update_global_state.emit(power_value)
-		if action_id == "trust shield":
-			GlobalEvent.add_shield.emit(power_value)
-			
-		if action_id == "kiss":
-			GlobalEvent.add_stamina.emit(power_value)
+
+	if skill_consumed.size() > 0:
+		for skill in skill_consumed:
+			action_id = skill["id"]
+			stamina_cost = skill["sta"]
+			power_value = skill["power"]
+	
+	
+			if action_id != "kiss" and action_id != "trust shield":
+				if power_value != null:
+					GlobalEvent.update_global_state.emit(power_value)
+			elif action_id == "trust shield":
+				if power_value != null:
+					GlobalEvent.add_shield.emit(power_value)
+			elif action_id == "kiss":
+				if power_value != null:
+					GlobalEvent.add_stamina.emit(power_value, self.stats.id)
+				else:
+					print("Target non valido")
+	
+			if stamina_cost != null and stamina_cost > 0:
+				progress_bar.value -= stamina_cost
+				print("bar:", progress_bar.value)
 		skill_consumed.clear()
-		
 	
 
 

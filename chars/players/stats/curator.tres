@@ -14,6 +14,7 @@ metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]
 script = ExtResource("1_3se0p")
+id = 2
 name_char = "Heart"
 role = "Curator"
 stamina = 2.0
