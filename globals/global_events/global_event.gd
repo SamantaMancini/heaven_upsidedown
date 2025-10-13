@@ -8,3 +8,5 @@ signal combination(combination: String)
 signal combination_2(combo: String, sta: float)
 signal start_process
 signal update_button
+
+var target_cura = -1

@@ -173,7 +173,9 @@ func _on_start_pressed() -> void:
 					GlobalEvent.add_shield.emit(power_value)
 			elif action_id == "kiss":
 				if power_value != null:
-					GlobalEvent.add_stamina.emit(power_value, self.stats.id)
+					if GlobalEvent.target_cura != -1:
+						GlobalEvent.add_stamina.emit(power_value, GlobalEvent.target_cura)
+						GlobalEvent.target_cura = -1
 				else:
 					print("Target non valido")
 	

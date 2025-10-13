@@ -97,17 +97,18 @@ func _on_button_3_pressed() -> void:
 
 func _on_button_5_pressed() -> void:
 	for player in players:
-		target_name = player.stats.id
+		GlobalEvent.target_cura = player.stats.id
 		player.target_on = false
 
-
+#Difensore
 func _on_button_6_pressed() -> void:
+	GlobalEvent.target_cura = 1
 	for player in players:
-		target_name = player.stats.id
+		#GlobalEvent.target_cura = player.stats.id
 		player.target_on = false
 
 
 func _on_button_7_pressed() -> void:
 	for player in players:
-		target_name = player.stats.id
+		GlobalEvent.target_cura = player.stats.id
 		player.target_on = false
