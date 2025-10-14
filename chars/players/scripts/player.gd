@@ -112,7 +112,7 @@ func _on_skill_pressed(id: String, button: Button) -> void:
 	skill_consumed.append(current_skill_info)
 	emotions = current_skill_info["emotion"]
 	if selected_skill_data.id == "kiss":
-		target_on = true
+		set_target(true)
 		
 	GlobalEvent.update_button.emit()
 	
@@ -185,6 +185,8 @@ func _on_start_pressed() -> void:
 		skill_consumed.clear()
 	
 
+func set_target(target: bool):
+	target_on = target
 
 #func _on_rest_pressed() -> void:
 	#if progress_bar.max_value < 10:
