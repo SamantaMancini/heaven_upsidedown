@@ -1,7 +1,6 @@
 extends Node2D
 class_name Enemy
 @onready var enemy_sprite: Sprite2D = $EnemySprite
-@onready var label: Label = $Label
 @export var sprite : Texture2D
 @export var color_debug : Color
 @export var stats : Stat
@@ -10,5 +9,4 @@ class_name Enemy
 func _ready() -> void:
 	enemy_sprite.texture = sprite
 	enemy_sprite.modulate = color_debug
-	label.text = stats.name_char
 	

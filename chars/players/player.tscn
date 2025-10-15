@@ -7,10 +7,10 @@
 script = ExtResource("1_7vu2r")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(550, 340)
 texture = ExtResource("1_2c621")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Sprite2D"]
+visible = false
 
 [node name="Label" type="Label" parent="Sprite2D/CanvasLayer"]
 anchors_preset = 8
@@ -199,6 +199,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = 435.0
 offset_top = 95.0
 offset_right = 668.0

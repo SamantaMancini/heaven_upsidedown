@@ -116,44 +116,8 @@ func _on_skill_pressed(id: String, button: Button) -> void:
 		
 	GlobalEvent.update_button.emit()
 	
-func _on_button_4_pressed() -> void:
-	if panel_3.is_visible_in_tree():
-		panel_3.hide()
-	
-	panel_2.show()
 
 
-
-
-#func _on_skill_1_mouse_entered() -> void:
-	#if not panel_5.is_visible_in_tree():
-		#panel_5.show()
-	#if stats.stamina_consumed.size() > 0:
-		#value_sta.text = str(stats.stamina_consumed[0])
-	#if stats.power.size() > 0:
-		#value_power.text = str(stats.power[0])
-	#if stats.description.size() > 0:
-		#description.text = stats.description[0]
-#
-#func _on_skill_1_mouse_exited() -> void:
-	#if panel_5.is_visible_in_tree():
-		#panel_5.hide()
-#
-#
-#func _on_skill_2_mouse_entered() -> void:
-	#if not panel_5.is_visible_in_tree():
-		#panel_5.show()
-	#if stats.stamina_consumed.size() > 0:
-		#value_sta.text = str(stats.stamina_consumed[1])
-	#if stats.power.size() > 0:
-		#value_power.text = str(stats.power[1])
-	#if stats.description.size() > 0:
-		#description.text = stats.description[1]
-
-
-#func _on_skill_2_mouse_exited() -> void:
-	#if panel_5.is_visible_in_tree():
-		#panel_5.hide()
 
 
 func _on_start_pressed() -> void:
@@ -187,8 +151,3 @@ func _on_start_pressed() -> void:
 
 func set_target(target: bool):
 	target_on = target
-
-#func _on_rest_pressed() -> void:
-	#if progress_bar.max_value < 10:
-		#progress_bar.max_value += 1
-	#progress_bar.value += 1
