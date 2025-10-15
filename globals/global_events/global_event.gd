@@ -9,5 +9,7 @@ signal combination(combination: String)
 signal combination_2(combo: String, sta: float)
 signal start_process
 signal update_button
+signal skill_pressed(id: String, button: Button)
 
 var target_cura = -1
+var can_rest = true

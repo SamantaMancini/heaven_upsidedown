@@ -58,9 +58,8 @@ func _ready() -> void:
 			v_skills.add_child(new_button)
 			new_button.connect("pressed", Callable(self, "_on_skill_pressed").bind(action_id, new_button))
 
-	GlobalEvent.add_stamina.connect(add_stamina_player)
 	GlobalEvent.start_process.connect(_on_start_pressed)
-	
+	GlobalEvent.skill_pressed.connect(_on_skill_pressed)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
@@ -91,8 +90,6 @@ func _on_action_pressed(id: String, button: Button) -> void:
 			button.disabled = false
 			
 func _on_skill_pressed(id: String, button: Button) -> void:
-	panel_3.hide()
-	panel_2.show()
 	var selected_skill_data = null
 	
 	for skill in stats.actions:
@@ -116,6 +113,7 @@ func _on_skill_pressed(id: String, button: Button) -> void:
 		
 	GlobalEvent.update_button.emit()
 	
+	print("skill_info", skill_consumed)
 
 
 
@@ -143,9 +141,9 @@ func _on_start_pressed() -> void:
 				else:
 					print("Target non valido")
 	
-			if stamina_cost != null and stamina_cost > 0:
-				progress_bar.value -= stamina_cost
-				print("bar:", progress_bar.value)
+			#if stamina_cost != null and stamina_cost > 0:
+				#progress_bar.value -= stamina_cost
+				#print("bar:", progress_bar.value)
 		skill_consumed.clear()
 	
 

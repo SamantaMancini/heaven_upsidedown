@@ -111,12 +111,13 @@ control = 1
 actions = Array[ExtResource("3_5vw27")]([SubResource("Resource_w48qg"), SubResource("Resource_vivmo")])
 metadata/_custom_type_script = "uid://benuj1836edrx"
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("players", "enemies")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("players", "enemies", "buttons_cure")]
 script = ExtResource("1_h2yge")
 combination_1 = "happytrustlove"
 combination_2 = "trustlove"
 players = [NodePath("CanvasLayer/Control/Player"), NodePath("CanvasLayer/Control/Player2"), NodePath("CanvasLayer/Control/Player3")]
 enemies = [NodePath("CanvasLayer/Control/Enemy"), NodePath("CanvasLayer/Control/Enemy2"), NodePath("CanvasLayer/Control/Enemy3")]
+buttons_cure = [NodePath("CanvasLayer/Control/Player/Cure"), NodePath("CanvasLayer/Control/Player2/Cure_2"), NodePath("CanvasLayer/Control/Player3/Cure_3")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(577, 326)
@@ -227,13 +228,58 @@ vertical_alignment = 1
 position = Vector2(263, 397)
 stats = ExtResource("2_0xm2m")
 
+[node name="Player" type="Button" parent="CanvasLayer/Control/Player"]
+modulate = Color(1, 1, 1, 0)
+offset_left = -67.0
+offset_top = -63.0
+offset_right = 64.0
+offset_bottom = 60.0
+
+[node name="Cure" type="Button" parent="CanvasLayer/Control/Player"]
+visible = false
+offset_left = -68.0
+offset_top = -111.0
+offset_right = 63.0
+offset_bottom = -61.0
+text = "Cura Felix"
+
 [node name="Player2" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
 position = Vector2(577, 397)
 stats = ExtResource("4_1bvp3")
 
+[node name="Player2" type="Button" parent="CanvasLayer/Control/Player2"]
+modulate = Color(1, 1, 1, 0)
+offset_left = -61.0
+offset_top = -64.0
+offset_right = 63.0
+offset_bottom = 61.0
+
+[node name="Cure_2" type="Button" parent="CanvasLayer/Control/Player2"]
+visible = false
+offset_left = -61.0
+offset_top = -122.0
+offset_right = 63.0
+offset_bottom = -80.0
+text = "Cura Trust"
+
 [node name="Player3" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
 position = Vector2(899, 397)
 stats = ExtResource("5_lquwl")
+
+[node name="Player3" type="Button" parent="CanvasLayer/Control/Player3"]
+modulate = Color(1, 1, 1, 0)
+offset_left = -66.0
+offset_top = -62.0
+offset_right = 64.0
+offset_bottom = 59.0
+
+[node name="Cure_3" type="Button" parent="CanvasLayer/Control/Player3"]
+visible = false
+offset_left = -66.0
+offset_top = -124.0
+offset_right = 64.0
+offset_bottom = -80.0
+text = "Cura Heart"
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -411,6 +457,12 @@ disabled = true
 text = "Dance"
 flat = true
 
+[connection signal="pressed" from="CanvasLayer/Control/Player/Player" to="." method="_on_player_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Player/Cure" to="." method="_on_cure_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Player2/Player2" to="." method="_on_player_2_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Player2/Cure_2" to="." method="_on_cure_2_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Player3/Player3" to="." method="_on_player_3_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Player3/Cure_3" to="." method="_on_cure_3_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer2/Action" to="." method="_on_action_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer2/Rest" to="." method="_on_rest_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4/Start" to="." method="_on_start_pressed"]
