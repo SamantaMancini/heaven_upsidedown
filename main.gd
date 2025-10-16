@@ -26,12 +26,13 @@ extends Node2D
 @export var enemies : Array[Enemy]
 @export var buttons_cure : Array[Button]
 
+var is_processing_skills = false
 var shields = 0
 var id_enemy = 0
 var id_player = 0
 var player_emotions = ""
-var skills : Dictionary = {}
-var target_name : int
+var skills = []
+var target = false
 var battle_end : bool = false
 var player_counter : int = 0
 
@@ -46,7 +47,7 @@ func _ready() -> void:
 	sta_min.text = str(players[id_player].stats.stamina)
 	will_v.text = str(players[id_player].stats.will)
 	control_v.text = str(players[id_player].stats.control)
-	
+	players[id_player].sprite_2d.modulate = Color.RED
 	GlobalEvent.update_global_state.connect(add_points)
 	GlobalEvent.add_shield.connect(add_shield)
 	GlobalEvent.combination.connect(dance_group)
@@ -55,10 +56,16 @@ func _ready() -> void:
 	GlobalEvent.remove_global_state.connect(remove_points)
 	GlobalEvent.add_shield_enemy.connect(add_shield_enemy)
 	GlobalEvent.add_stamina.connect(stamina)
+	GlobalEvent.start_process.connect(skill_consumed)
 	player_turn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if target:
+		for button in buttons_cure:
+			button.show()
+	if player_counter >= 3:
+		start_off(false)
 	if progress_bar.value <= progress_bar.min_value:
 		battle_end = true
 	if progress_bar.value >= progress_bar.max_value:
@@ -70,16 +77,20 @@ func _process(delta: float) -> void:
 	will_v.text = str(players[id_player].stats.will)
 	control_v.text = str(players[id_player].stats.control)
 	_0.text = str(start_num)
-	for player in players:
-		if player.target_on:
-			for button in buttons_cure:
-				button.show()
+	_0s.text = str(shields)
 
+	if players[id_player].stats.stamina >= 10:
+		rest.disabled = true
+			
+func selected_target(target_on: bool):
+	target = target_on
+	
 func stamina(power: float, id: int):
 	for player in players:
 		if player.stats.id == id:
 			player.stats.stamina += power
 	
+
 func skill_players():
 	action.disabled = true
 	rest.disabled = true
@@ -92,7 +103,12 @@ func skill_players():
 				button.add_theme_font_size_override("font_size", 30)
 				button.add_theme_constant_override("outline_size", 5)
 				v_box_container_3.add_child(button)
-				button.connect("pressed", Callable(self, "selected_skill").bind(skill.id, button))
+				button.connect("pressed", Callable(self, "selected_skill").bind(skill.id, button, skill.power, skill.stamina_consumed))
+				if player_emotions.is_empty():
+					player_emotions = skill.emotion
+				else:
+					if player_emotions.find(skill.emotion) == -1:
+						player_emotions += skill.emotion
 				if skill.stamina_consumed > player.stats.stamina:
 					button.disabled = true
 	var delete_button = Button.new()
@@ -110,140 +126,146 @@ func _on_delete_button_pressed():
 		v_box_container_3.remove_child(child)
 		child.queue_free()
 		
-func selected_skill(id: String, button: Button):
-	GlobalEvent.skill_pressed.emit(id, button)
+func selected_skill(id: String, button: Button, power: float, stamina: float):
+	GlobalEvent.update_button.emit()
+	if id == "kiss":
+		selected_target(true)
+	var skill_info = {
+		"id": id,
+		"sta": stamina,
+		"power": power
+	}
+	skills.append(skill_info)
 	for child in v_box_container_3.get_children():
 		v_box_container_3.remove_child(child)
 		child.queue_free()
-	action.disabled = false
-	rest.disabled = false
 	
 func player_turn():
 	player_counter = 0
 	turn.text = "turno player"
 	action.disabled = false
+	rest.disabled = false
+	start_off(true)
 	panel.show()
 	id_enemy = 0
 	for player in players:
-		player.stats.stamina += 1
+		if player.stats.stamina < 10:
+			player.stats.stamina += 1
 		
 func enemy_action_phase():
 	turn.text = "turno nemico"
 	panel.hide()
-	if enemies[id_enemy].stats.id == 0:
-		name_enemies.text = enemies[id_enemy].stats.name_char
-		enemies[id_enemy].stats.stamina += 1
-		await get_tree().create_timer(2).timeout
-		if enemies[id_enemy].stats.stamina >= 3:
-			GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[1].power)
-			enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
-			id_enemy += 1
-		elif enemies[id_enemy].stats.stamina >= 1:
+	if not battle_end:
+		if enemies[id_enemy].stats.id == 0:
 			name_enemies.text = enemies[id_enemy].stats.name_char
-			GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
-			enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
-			id_enemy += 1
-		else:
 			enemies[id_enemy].stats.stamina += 1
-			id_enemy += 1
+			await get_tree().create_timer(2).timeout
+			if enemies[id_enemy].stats.stamina >= 3:
+				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[1].power)
+				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
+				id_enemy += 1
+			elif enemies[id_enemy].stats.stamina >= 1:
+				name_enemies.text = enemies[id_enemy].stats.name_char
+				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
+				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
+				id_enemy += 1
+			else:
+				enemies[id_enemy].stats.stamina += 1
+				id_enemy += 1
 			
-	if enemies[id_enemy].stats.id == 1:
-		name_enemies.text = enemies[id_enemy].stats.name_char
-		enemies[id_enemy].stats.stamina += 1
-		await get_tree().create_timer(2).timeout
-		if enemies[id_enemy].stats.stamina >= 2:
-			GlobalEvent.add_shield_enemy.emit(enemies[id_enemy].stats.actions[1].power)
-			enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
-			id_enemy += 1
-		elif enemies[id_enemy].stats.stamina >= 1:
-			GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
-			enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
-			id_enemy += 1
-		else:
+		if enemies[id_enemy].stats.id == 1:
+			name_enemies.text = enemies[id_enemy].stats.name_char
 			enemies[id_enemy].stats.stamina += 1
-			id_enemy += 1
+			await get_tree().create_timer(2).timeout
+			if enemies[id_enemy].stats.stamina >= 2:
+				GlobalEvent.add_shield_enemy.emit(enemies[id_enemy].stats.actions[1].power)
+				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
+				id_enemy += 1
+			elif enemies[id_enemy].stats.stamina >= 1:
+				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
+				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
+				id_enemy += 1
+			else:
+				enemies[id_enemy].stats.stamina += 1
+				id_enemy += 1
 			
-	if enemies[id_enemy].stats.id == 2:
-		enemies[id_enemy].stats.stamina += 1
-		await get_tree().create_timer(2).timeout
-		if enemies[id_enemy].stats.stamina >= 3:
-			GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[1].power)
-			enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
-			player_turn()
-		elif enemies[id_enemy].stats.stamina >= 1:
-			GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
-			enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
-			player_turn()
-		else:
+		if enemies[id_enemy].stats.id == 2:
 			enemies[id_enemy].stats.stamina += 1
-			player_turn()
+			await get_tree().create_timer(2).timeout
+			if enemies[id_enemy].stats.stamina >= 3:
+				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[1].power)
+				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
+				player_turn()
+			elif enemies[id_enemy].stats.stamina >= 1:
+				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
+				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
+				player_turn()
+			else:
+				enemies[id_enemy].stats.stamina += 1
+				player_turn()
 			
 func remove_points(points: float):
 	if shields <= 0:
 		progress_bar.value -= points
 		start_num -= points
-		_0s.hide()
-		h_box_container.show()
 	else:
 		if shields > 0:
 			shields -= points
 		
 func update_button():
-	for player in players:
-		if player_emotions.find(player.emotions) == -1:
-			player_emotions += player.emotions
-
+	print(player_emotions)
 	if player_emotions == combination_1:
 		dance.disabled = false
 	elif player_emotions == combination_2:
 		hug.disabled = false
 	player_counter += 1
-	
-	if player_counter == 3:
+	if player_counter >= 3:
 		start_off(false)
-		
+	
 func add_points(value: float):
 	if shields >= 0:
 		progress_bar.value += value
 		start_num += value
-		_0s.hide()
-		h_box_container.show()
 	else:
 		shields += value
 #
 func add_shield(shield: float):
 	if shields < 0:
 		shields = shield
-		_0s.show()
-		h_box_container.hide()
 	else:
 		shields += shield
 
 func add_shield_enemy(shield: float):
 	if shields > 0:
 		shields = -shield
-		_0s.show()
-		h_box_container.hide()
 	else:
 		shields -= shield
 	
-func dance_group(comb: String):
+func dance_group(comb: String, stamina: float):
+	var damage = 5
 	if comb == combination_1:
-		if shields >= 0:
-			_0s.hide()
-			h_box_container.show()
-			progress_bar.value += 5
-			start_num += 5
-		else:
-			shields += 5
+		if shields <= 0:
+			shields = 0
+		progress_bar.value += damage
+		start_num += damage
+	for player in players:
+		player.stats.stamina -= stamina
+	skills.clear()
+	selected_target(false)
+	for button in buttons_cure:
+		button.hide()
+
 	enemy_action_phase()
 	
 func hug_group(comb: String, stamina: float):
 	for player in players:
 		if comb == combination_2:
 			player.stats.stamina += stamina
+	skills.clear()
+	selected_target(false)
+	for button in buttons_cure:
+		button.hide()
 	enemy_action_phase()
-		
 
 
 func _on_start_pressed() -> void:
@@ -252,35 +274,25 @@ func _on_start_pressed() -> void:
 	hug.disabled = true
 	dance.disabled = true
 	player_emotions = ""
-	for player in players:
-		player.skill_consumed = []
-		player.emotions = ""
-	if not battle_end:
-		await get_tree().create_timer(2).timeout
-		enemy_action_phase()
+	
 		
 func _on_dance_pressed() -> void:
-	GlobalEvent.combination.emit(player_emotions)
+	var skill_sta = null
+	for skill in skills:
+		skill_sta = skill["sta"]
+	GlobalEvent.combination.emit(player_emotions, skill_sta)
 	player_emotions = ""
 	start_off(true)
-	skills.clear()
 	dance.disabled = true
 	hug.disabled = true
-	for player in players:
-		player.emotions = ""
-		player.skill_consumed = []
-	
 
 
 func _on_hug_pressed() -> void:
 	GlobalEvent.combination_2.emit(player_emotions, 5)
 	player_emotions = ""
 	start_off(true)
-	skills.clear()
+	dance.disabled = true
 	hug.disabled = true
-	for player in players:
-		player.emotions = ""
-		player.skill_consumed = []
 
 
 func start_off(disabled: bool):
@@ -289,8 +301,10 @@ func start_off(disabled: bool):
 
 func _on_rest_pressed() -> void:
 	players[id_player].stats.stamina += 1
-	
-			
+	player_counter += 1
+	rest.disabled = true
+	action.disabled = true
+
 
 func _on_action_pressed() -> void:
 	skill_players()
@@ -298,6 +312,9 @@ func _on_action_pressed() -> void:
 
 func _on_player_pressed() -> void:
 	id_player = 0
+	players[0].sprite_2d.modulate = Color.RED
+	players[1].sprite_2d.modulate = Color.WHITE
+	players[2].sprite_2d.modulate = Color.WHITE
 	for child in v_box_container_3.get_children():
 		v_box_container_3.remove_child(child)
 		child.queue_free()
@@ -306,6 +323,9 @@ func _on_player_pressed() -> void:
 	
 func _on_player_2_pressed() -> void:
 	id_player = 1
+	players[0].sprite_2d.modulate = Color.WHITE
+	players[1].sprite_2d.modulate = Color.RED
+	players[2].sprite_2d.modulate = Color.WHITE
 	for child in v_box_container_3.get_children():
 		v_box_container_3.remove_child(child)
 		child.queue_free()
@@ -314,6 +334,9 @@ func _on_player_2_pressed() -> void:
 	
 func _on_player_3_pressed() -> void:
 	id_player = 2
+	players[0].sprite_2d.modulate = Color.WHITE
+	players[1].sprite_2d.modulate = Color.WHITE
+	players[2].sprite_2d.modulate = Color.RED
 	for child in v_box_container_3.get_children():
 		v_box_container_3.remove_child(child)
 		child.queue_free()
@@ -323,9 +346,46 @@ func _on_player_3_pressed() -> void:
 
 func _on_cure_pressed() -> void:
 	GlobalEvent.target_cura = 0
-
+	for button in buttons_cure:
+		button.hide()
+	selected_target(false)
+	rest.disabled = true
+	action.disabled = true
+	
 func _on_cure_2_pressed() -> void:
 	GlobalEvent.target_cura = 1
+	for button in buttons_cure:
+		button.hide()
+	selected_target(false)
+	rest.disabled = true
+	action.disabled = true
 	
 func _on_cure_3_pressed() -> void:
 	GlobalEvent.target_cura = 2
+	for button in buttons_cure:
+		button.hide()
+	selected_target(false)
+	rest.disabled = true
+	action.disabled = true
+
+func skill_consumed():
+	var action_id = null
+	var stamina_cost = null
+	var power_value = null
+	for skill in skills:
+		action_id = skill["id"]
+		stamina_cost = skill["sta"]
+		power_value = skill["power"]
+	
+		if action_id == "kiss":
+			if GlobalEvent.target_cura != -1:
+				GlobalEvent.add_stamina.emit(power_value, GlobalEvent.target_cura)
+				GlobalEvent.target_cura = -1
+		elif action_id == "trust shield":
+			GlobalEvent.add_shield.emit(power_value)
+		else:
+			GlobalEvent.update_global_state.emit(power_value)
+		
+			
+	skills.clear()
+	enemy_action_phase()
