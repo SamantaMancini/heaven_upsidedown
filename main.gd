@@ -141,6 +141,10 @@ func selected_skill(id: String, button: Button, power: float, stamina: float):
 		child.queue_free()
 	
 func player_turn():
+	if battle_end:
+		panel.hide()
+		return
+	
 	player_counter = 0
 	turn.text = "turno player"
 	action.disabled = false
@@ -153,9 +157,16 @@ func player_turn():
 			player.stats.stamina += 1
 		
 func enemy_action_phase():
-	turn.text = "turno nemico"
+	if progress_bar.value <= progress_bar.min_value:
+		battle_end = true
+		turn.text = "game over"
+	if progress_bar.value >= progress_bar.max_value:
+		battle_end = true
+		turn.text = "win"
+	
 	panel.hide()
 	if not battle_end:
+		turn.text = "turno nemico"
 		if enemies[id_enemy].stats.id == 0:
 			name_enemies.text = enemies[id_enemy].stats.name_char
 			enemies[id_enemy].stats.stamina += 1
@@ -203,7 +214,14 @@ func enemy_action_phase():
 			else:
 				enemies[id_enemy].stats.stamina += 1
 				player_turn()
-			
+	
+	if progress_bar.value <= progress_bar.min_value:
+		battle_end = true
+		turn.text = "game over"
+	if progress_bar.value >= progress_bar.max_value:
+		battle_end = true
+		turn.text = "win"
+		
 func remove_points(points: float):
 	if shields <= 0:
 		progress_bar.value -= points
