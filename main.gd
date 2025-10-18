@@ -178,61 +178,52 @@ func enemy_action_phase():
 	panel.hide()
 	if not battle_end:
 		turn.text = "turno nemico"
-		if enemies[id_enemy].stats.id == 0:
-			name_enemies.text = enemies[id_enemy].stats.name_char
-			enemies[id_enemy].stats.stamina += 1
-			await get_tree().create_timer(2).timeout
-			if enemies[id_enemy].stats.stamina >= 3:
-				name_enemies.text = "Goblin Attack"
-				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[1].power)
-				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
-				id_enemy += 1
-			elif enemies[id_enemy].stats.stamina >= 1:
-				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
-				name_enemies.text = "Goblin Attack"
-				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
-				id_enemy += 1
-			else:
-				name_enemies.text = "Goblin Rest"
-				enemies[id_enemy].stats.stamina += 1
-				id_enemy += 1
+		for enemy in enemies:
+			name_enemies.text = enemy.stats.name_char
+			enemy.stats.stamina += 1
+			await get_tree().create_timer(1).timeout
 			
-		if enemies[id_enemy].stats.id == 1:
-			name_enemies.text = enemies[id_enemy].stats.name_char
-			enemies[id_enemy].stats.stamina += 1
+			match enemy.stats.id:
+				0:
+					if enemy.stats.stamina >= 3:
+						name_enemies.text = "Goblin Attack"
+						GlobalEvent.remove_global_state.emit(enemy.stats.actions[1].power)
+						enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
+					elif enemy.stats.stamina >= 1:
+						GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
+						name_enemies.text = "Goblin Attack"
+						enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
+					else:
+						name_enemies.text = "Goblin Rest"
+						enemy.stats.stamina += 1
+				1:
+					if enemy.stats.stamina >= 2:
+						GlobalEvent.add_shield_enemy.emit(enemy.stats.actions[1].power)
+						name_enemies.text = "Blobby Defence"
+						enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
+					elif enemy.stats.stamina >= 1:
+						GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
+						name_enemies.text = "Blobby Attack"
+						enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
+						
+					else:
+						name_enemies.text = "Blobby Rest"
+						enemy.stats.stamina += 1
+				2:
+					if enemy.stats.stamina >= 3:
+						name_enemies.text = "Goblin Attack"
+						GlobalEvent.remove_global_state.emit(enemy.stats.actions[1].power)
+						enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
+					elif enemy.stats.stamina >= 1:
+						name_enemies.text = "Goblin Attack"
+						GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
+						enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
+					else:
+						name_enemies.text = "Goblin Rest"
+						enemy.stats.stamina += 1
+						
 			await get_tree().create_timer(2).timeout
-			if enemies[id_enemy].stats.stamina >= 2:
-				GlobalEvent.add_shield_enemy.emit(enemies[id_enemy].stats.actions[1].power)
-				name_enemies.text = "Blobby Defence"
-				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
-				id_enemy += 1
-			elif enemies[id_enemy].stats.stamina >= 1:
-				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
-				name_enemies.text = "Blobby Attack"
-				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
-				id_enemy += 1
-			else:
-				name_enemies.text = "Blobby Rest"
-				enemies[id_enemy].stats.stamina += 1
-				id_enemy += 1
-			
-		if enemies[id_enemy].stats.id == 2:
-			enemies[id_enemy].stats.stamina += 1
-			await get_tree().create_timer(2).timeout
-			if enemies[id_enemy].stats.stamina >= 3:
-				name_enemies.text = "Goblin Attack"
-				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[1].power)
-				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[1].stamina_consumed
-				player_turn()
-			elif enemies[id_enemy].stats.stamina >= 1:
-				name_enemies.text = "Goblin Attack"
-				GlobalEvent.remove_global_state.emit(enemies[id_enemy].stats.actions[0].power)
-				enemies[id_enemy].stats.stamina -= enemies[id_enemy].stats.actions[0].stamina_consumed
-				player_turn()
-			else:
-				name_enemies.text = "Goblin Rest"
-				enemies[id_enemy].stats.stamina += 1
-				player_turn()
+		player_turn()
 	
 	if progress_bar.value <= progress_bar.min_value:
 		battle_end = true
