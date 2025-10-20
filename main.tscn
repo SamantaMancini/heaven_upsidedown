@@ -238,10 +238,32 @@ offset_bottom = 60.0
 [node name="Cure" type="Button" parent="CanvasLayer/Control/Player"]
 visible = false
 offset_left = -68.0
-offset_top = -111.0
-offset_right = 63.0
-offset_bottom = -61.0
+offset_top = -154.0
+offset_right = 82.0
+offset_bottom = -104.0
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
 text = "Cura Felix"
+flat = true
+
+[node name="Action_Label" type="Label" parent="CanvasLayer/Control/Player"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.0
+offset_top = -108.0
+offset_right = 57.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "fff"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Player2" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
 position = Vector2(577, 397)
@@ -257,10 +279,32 @@ offset_bottom = 61.0
 [node name="Cure_2" type="Button" parent="CanvasLayer/Control/Player2"]
 visible = false
 offset_left = -61.0
-offset_top = -122.0
-offset_right = 63.0
-offset_bottom = -80.0
+offset_top = -154.0
+offset_right = 98.0
+offset_bottom = -104.0
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
 text = "Cura Trust"
+flat = true
+
+[node name="Action_Label2" type="Label" parent="CanvasLayer/Control/Player2"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -112.0
+offset_right = 55.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "fff"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Player3" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
 position = Vector2(899, 397)
@@ -276,10 +320,32 @@ offset_bottom = 59.0
 [node name="Cure_3" type="Button" parent="CanvasLayer/Control/Player3"]
 visible = false
 offset_left = -66.0
-offset_top = -124.0
-offset_right = 64.0
-offset_bottom = -80.0
+offset_top = -154.0
+offset_right = 100.0
+offset_bottom = -104.0
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
 text = "Cura Heart"
+flat = true
+
+[node name="Action_Label3" type="Label" parent="CanvasLayer/Control/Player3"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.0
+offset_top = -112.0
+offset_right = 55.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "fff"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Control"]
 layout_mode = 1
