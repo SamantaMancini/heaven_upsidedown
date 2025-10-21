@@ -22,7 +22,6 @@ extends Node2D
 @onready var action_label_2: Label = $CanvasLayer/Control/Player2/Action_Label2
 @onready var action_label_3: Label = $CanvasLayer/Control/Player3/Action_Label3
 
-
 @export var start_num : int = 0
 @export var combination_1 : String
 @export var combination_2 : String
@@ -45,12 +44,8 @@ func _ready() -> void:
 	_0.text = str(start_num)
 	_0s.text = str(shields)
 	name_enemies.text = enemies[id_enemy].stats.name_char
-	name_char.text = players[id_player].stats.name_char
-	role.text = players[id_player].stats.role
-	sta_min.text = str(players[id_player].stats.stamina)
-	will_v.text = str(players[id_player].stats.will)
-	control_v.text = str(players[id_player].stats.control)
-	players[id_player].sprite_2d.modulate = Color.YELLOW
+	stats_player()
+	change_color_player(0, Color.YELLOW)
 	GlobalEvent.update_global_state.connect(add_points)
 	GlobalEvent.add_shield.connect(add_shield)
 	GlobalEvent.combination.connect(dance_group)
@@ -66,30 +61,44 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if players[id_player].stats.stamina >= 10:
 		buttons_cure[id_player].disabled = true
-	if target:
-		for button in buttons_cure:
-			button.show()
+		rest.disabled = true
+	else:
+		buttons_cure[id_player].disabled = false
+		
+	draw_buttons_cure()
 				
 	if player_counter >= 3:
 		start_off(false)
-	
-	if progress_bar.value <= progress_bar.min_value:
-		battle_end = true
-		panel.hide()
-	if progress_bar.value >= progress_bar.max_value:
-		battle_end = true
-		panel.hide()
+		
+	battle_end_conditions()
+	stats_player()
+	_0.text = str(start_num)
+	_0s.text = str(shields)
+
+func stats_player():
 	name_char.text = players[id_player].stats.name_char
 	role.text = players[id_player].stats.role
 	sta_min.text = str(players[id_player].stats.stamina)
 	will_v.text = str(players[id_player].stats.will)
 	control_v.text = str(players[id_player].stats.control)
-	_0.text = str(start_num)
-	_0s.text = str(shields)
-
-	if players[id_player].stats.stamina >= 10:
-		rest.disabled = true
+	
+func draw_buttons_cure():
+	for button in buttons_cure:
+		if target:
+			button.show()
+		else:
+			button.hide()
 			
+func battle_end_conditions():
+	if progress_bar.value <= progress_bar.min_value:
+		battle_end = true
+		turn.text = "Game Over"
+		panel.hide()
+	if progress_bar.value >= progress_bar.max_value:
+		battle_end = true
+		turn.text = "Win"
+		panel.hide()
+		
 func selected_target(target_on: bool):
 	target = target_on
 	
@@ -98,10 +107,12 @@ func stamina(power: float, id: int):
 		if player.stats.id == id:
 			player.stats.stamina += power
 	
-
+func action_button_disabled(disabled: bool):
+	action.disabled = disabled
+	rest.disabled = disabled
+	
 func skill_players():
-	action.disabled = true
-	rest.disabled = true
+	action_button_disabled(true)
 	for player in players:
 		if id_player == player.stats.id:
 			for skill in player.stats.actions:
@@ -122,12 +133,14 @@ func skill_players():
 	delete_button.connect("pressed",  Callable(self, "_on_delete_button_pressed"))
 	v_box_container_3.add_child(delete_button)
 
-func _on_delete_button_pressed():
-	action.disabled = false
-	rest.disabled = false
+func remove_children():
 	for child in v_box_container_3.get_children():
 		v_box_container_3.remove_child(child)
 		child.queue_free()
+		
+func _on_delete_button_pressed():
+	action_button_disabled(false)
+	remove_children()
 		
 func selected_skill(id: String, button: Button, power: float, stamina: float, emotion: String):
 	var skill_info = {
@@ -154,39 +167,40 @@ func selected_skill(id: String, button: Button, power: float, stamina: float, em
 		
 	if not action_selected.has(id_player):
 		action_selected.append(id_player)
-	action.disabled = true
-	rest.disabled = true
-	for child in v_box_container_3.get_children():
-		v_box_container_3.remove_child(child)
-		child.queue_free()
-	
+	action_button_disabled(true)
+	remove_children()
+		
+func add_stamina_player_turn(player: Player):
+	if player.stats.stamina < 10:
+		player.stats.stamina += 1
+	else:
+		player.stats.stamina = 10
+		
 func player_turn():
 	if battle_end:
 		panel.hide()
 		return
 	
 	player_counter = 0
-	turn.text = "turno player"
-	action.disabled = false
-	rest.disabled = false
+	turn.text = "Player Turn"
+	action_button_disabled(false)
 	start_off(true)
 	panel.show()
 	id_enemy = 0
 	for player in players:
-		if player.stats.stamina < 10:
-			player.stats.stamina += 1
+		match player.stats.id:
+			0:
+				add_stamina_player_turn(player)
+			1:
+				add_stamina_player_turn(player)
+			2:
+				add_stamina_player_turn(player)
 		
 func enemy_action_phase():
-	if progress_bar.value <= progress_bar.min_value:
-		battle_end = true
-		turn.text = "game over"
-	if progress_bar.value >= progress_bar.max_value:
-		battle_end = true
-		turn.text = "win"
-	
+	battle_end_conditions()
 	panel.hide()
 	if not battle_end:
-		turn.text = "turno nemico"
+		turn.text = "Enemy Turn"
 		for enemy in enemies:
 			name_enemies.text = enemy.stats.name_char
 			enemy.stats.stamina += 1
@@ -194,87 +208,83 @@ func enemy_action_phase():
 			
 			match enemy.stats.id:
 				0:
-					if enemy.stats.stamina >= 3:
-						name_enemies.text = "Goblin Attack"
-						GlobalEvent.remove_global_state.emit(enemy.stats.actions[1].power)
-						enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
-					elif enemy.stats.stamina >= 1:
-						GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
-						name_enemies.text = "Goblin Attack"
-						enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
-					else:
-						name_enemies.text = "Goblin Rest"
-						enemy.stats.stamina += 1
+					goblin_attack(enemy)
 				1:
-					if enemy.stats.stamina >= 2:
-						GlobalEvent.add_shield_enemy.emit(enemy.stats.actions[1].power)
-						name_enemies.text = "Blobby Defence"
-						enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
-					elif enemy.stats.stamina >= 1:
-						GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
-						name_enemies.text = "Blobby Attack"
-						enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
-						
-					else:
-						name_enemies.text = "Blobby Rest"
-						enemy.stats.stamina += 1
+					blobby_attack(enemy)
 				2:
-					if enemy.stats.stamina >= 3:
-						name_enemies.text = "Goblin Attack"
-						GlobalEvent.remove_global_state.emit(enemy.stats.actions[1].power)
-						enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
-					elif enemy.stats.stamina >= 1:
-						name_enemies.text = "Goblin Attack"
-						GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
-						enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
-					else:
-						name_enemies.text = "Goblin Rest"
-						enemy.stats.stamina += 1
+					goblin_attack(enemy)
 						
 			await get_tree().create_timer(2).timeout
-		player_turn()
-	
-	if progress_bar.value <= progress_bar.min_value:
-		battle_end = true
-		turn.text = "game over"
-	if progress_bar.value >= progress_bar.max_value:
-		battle_end = true
-		turn.text = "win"
 		
-func remove_points(points: float):
-	if shields <= 0:
-		progress_bar.value -= points
-		start_num -= points
+		player_turn()
+	battle_end_conditions()
+	
+func goblin_attack(enemy):
+	if enemy.stats.stamina >= 3:
+		name_enemies.text = "Goblin Attack"
+		GlobalEvent.remove_global_state.emit(enemy.stats.actions[1].power)
+		enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
+	elif enemy.stats.stamina >= 1:
+		GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
+		name_enemies.text = "Goblin Attack"
+		enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
 	else:
-		if points > shields:
-			var damage_overflow = points - shields
+		name_enemies.text = "Goblin Rest"
+		enemy.stats.stamina += 1
+		
+func blobby_attack(enemy):
+	if enemy.stats.stamina >= 2:
+		GlobalEvent.add_shield_enemy.emit(enemy.stats.actions[1].power)
+		name_enemies.text = "Blobby Defence"
+		enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
+	elif enemy.stats.stamina >= 1:
+		GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
+		name_enemies.text = "Blobby Attack"
+		enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
+						
+	else:
+		name_enemies.text = "Blobby Rest"
+		enemy.stats.stamina += 1
+		
+func remove_points(damage: float):
+	if shields > 0:
+		if damage > shields:
+			var damage_overflow = damage - shields
 			shields = 0
 			progress_bar.value -= damage_overflow
 			start_num -= damage_overflow
 		else:
-			shields -= points
-		
+			shields -= damage
+	else:
+		progress_bar.value -= damage
+		start_num -= damage
+			
+func combination_disabled(disabled_dance: bool, disabled_hug):
+	dance.disabled = disabled_dance
+	hug.disabled = disabled_hug
+	
 func update_button():
 	if player_emotions == combination_1:
-		dance.disabled = false
+		combination_disabled(false, true)
 	elif player_emotions == combination_2:
-		hug.disabled = false
+		combination_disabled(true, false)
 	player_counter += 1
 	
 	
-func add_points(value: float):
-	if shields >= 0:
-		progress_bar.value += value
-		start_num += value
-	else:
-		if value > shields:
-			var damage_overflow = value + shields
+func add_points(damage: float):
+	if shields < 0:
+		if damage > shields:
+			var damage_overflow = damage + shields
 			shields = 0
 			progress_bar.value += damage_overflow
 			start_num += damage_overflow
 		else:
-			shields += value
-	
+			shields += damage
+	else:
+		progress_bar.value += damage
+		start_num += damage
+			
+
 func add_shield(shield: float):
 	if shields <= 0:
 		shields = shield
@@ -286,25 +296,11 @@ func add_shield_enemy(shield: float):
 		shields = -shield
 	else:
 		shields -= shield
-	
+
 func dance_group(comb: String):
 	var damage = 5
 	if comb == combination_1:
-		if shields < 0:
-			if damage >= shields:
-				var damage_overflow = damage + shields
-				progress_bar.value += damage_overflow
-				start_num += damage_overflow
-				shields = 0
-				print("danni:", damage_overflow)
-			else:
-				shields += damage
-		else:
-			progress_bar.value += damage
-			start_num += damage
-		
-	for button in buttons_cure:
-		button.hide()
+		GlobalEvent.update_global_state.emit(damage)
 	
 	selected_target(false)
 	skills.clear()
@@ -314,12 +310,8 @@ func dance_group(comb: String):
 func hug_group(comb: String, stamina: float):
 	for player in players:
 		if comb == combination_2:
-			if player.stats.stamina < 10:
-				player.stats.stamina += stamina
-			else:
-				player.stats.stamina = 10
-	for button in buttons_cure:
-		button.hide()
+			add_stamina_player_turn(player)
+	
 	skills.clear()
 	action_selected.clear()
 	selected_target(false)
@@ -329,8 +321,7 @@ func hug_group(comb: String, stamina: float):
 func _on_start_pressed() -> void:
 	GlobalEvent.start_process.emit()
 	start_off(true)
-	hug.disabled = true
-	dance.disabled = true
+	combination_disabled(true, true)
 	player_emotions = ""
 	action_label.hide()
 	action_label_2.hide()
@@ -341,8 +332,7 @@ func _on_dance_pressed() -> void:
 	GlobalEvent.combination.emit(player_emotions)
 	player_emotions = ""
 	start_off(true)
-	dance.disabled = true
-	hug.disabled = true
+	combination_disabled(true, true)
 	action_label.hide()
 	action_label_2.hide()
 	action_label_3.hide()
@@ -351,8 +341,7 @@ func _on_hug_pressed() -> void:
 	GlobalEvent.combination_2.emit(player_emotions, 5)
 	player_emotions = ""
 	start_off(true)
-	dance.disabled = true
-	hug.disabled = true
+	combination_disabled(true, true)
 	action_label.hide()
 	action_label_2.hide()
 	action_label_3.hide()
@@ -368,102 +357,71 @@ func _on_rest_pressed() -> void:
 	
 	if not action_selected.has(id_player):
 		action_selected.append(id_player)
-	action.disabled = true
-	rest.disabled = true
-	if id_player == 0:
-		action_label.text = "Rest"
-		action_label.show()
-	elif id_player == 1:
-		action_label_2.text = "Rest"
-		action_label_2.show()
+	action_button_disabled(true)
+	match id_player:
+		0:
+			action_label.text = "Rest"
+			action_label.show()
+		1:
+			action_label_2.text = "Rest"
+			action_label_2.show()
+		2:
+			action_label_3.text = "Rest"
+			action_label_3.show()
+
+func action_selected_player(id: int):
+	if action_selected.has(id):
+		action_button_disabled(true)
 	else:
-		action_label_3.text = "Rest"
-		action_label_3.show()
+		action_button_disabled(false)
 		
 func _on_action_pressed() -> void:
 	skill_players()
 
-
+func change_color_player(id: int, color: Color):
+	for i in range(players.size()):
+		if i == id:
+			players[i].sprite_2d.modulate = color
+		else:
+			players[i].sprite_2d.modulate = Color.WHITE
+	
 func _on_player_pressed() -> void:
 	id_player = 0
-	players[0].sprite_2d.modulate = Color.YELLOW
-	players[1].sprite_2d.modulate = Color.WHITE
-	players[2].sprite_2d.modulate = Color.WHITE
-	if action_selected.has(0):
-		action.disabled = true
-		rest.disabled = true
-	else:
-		action.disabled = false
-		rest.disabled = false
-	for child in v_box_container_3.get_children():
-		v_box_container_3.remove_child(child)
-		child.queue_free()
+	change_color_player(id_player, Color.YELLOW)
+	action_selected_player(id_player)
+	remove_children()
 	
 	
 func _on_player_2_pressed() -> void:
 	id_player = 1
-	players[0].sprite_2d.modulate = Color.WHITE
-	players[1].sprite_2d.modulate = Color.YELLOW
-	players[2].sprite_2d.modulate = Color.WHITE
-	if action_selected.has(1):
-		action.disabled = true
-		rest.disabled = true
-	else:
-		action.disabled = false
-		rest.disabled = false
-	for child in v_box_container_3.get_children():
-		v_box_container_3.remove_child(child)
-		child.queue_free()
+	change_color_player(id_player, Color.YELLOW)
+	action_selected_player(id_player)
+	remove_children()
 	
 func _on_player_3_pressed() -> void:
 	id_player = 2
-	players[0].sprite_2d.modulate = Color.WHITE
-	players[1].sprite_2d.modulate = Color.WHITE
-	players[2].sprite_2d.modulate = Color.YELLOW
-	if action_selected.has(2):
-		action.disabled = true
-		rest.disabled = true
-	else:
-		action.disabled = false
-		rest.disabled = false
-	for child in v_box_container_3.get_children():
-		v_box_container_3.remove_child(child)
-		child.queue_free()
+	change_color_player(id_player, Color.YELLOW)
+	action_selected_player(id_player)
+	remove_children()
 
-
-
-func _on_cure_pressed() -> void:
-	GlobalEvent.target_cura = 0
+func target_stamina_added(text: String):
 	players[2].stats.stamina -= players[2].stats.actions[0].stamina_consumed
 	action_label_3.show()
-	action_label_3.text = "Curato Felix"
-	for button in buttons_cure:
-		button.hide()
+	action_label_3.text = text
 	selected_target(false)
 	GlobalEvent.update_button.emit()
 	
+func _on_cure_pressed() -> void:
+	GlobalEvent.target_cura = 0
+	target_stamina_added("Felix stamina added")
 	
 func _on_cure_2_pressed() -> void:
 	GlobalEvent.target_cura = 1
-	players[2].stats.stamina -= players[2].stats.actions[0].stamina_consumed
-	action_label_3.show()
-	action_label_3.text = "Curato Trust"
-	for button in buttons_cure:
-		button.hide()
-	selected_target(false)
-	GlobalEvent.update_button.emit()
+	target_stamina_added("Trust stamina added")
 
-	
 func _on_cure_3_pressed() -> void:
 	GlobalEvent.target_cura = 2
-	players[2].stats.stamina -= players[2].stats.actions[0].stamina_consumed
-	action_label_3.show()
-	action_label_3.text = "Curato Heart"
-	for button in buttons_cure:
-		button.hide()
-	selected_target(false)
-	GlobalEvent.update_button.emit()
-
+	target_stamina_added("Heart stamina added")
 
 func skill_consumed():
 	var action_id = null
@@ -480,7 +438,6 @@ func skill_consumed():
 			GlobalEvent.add_shield.emit(power_value)
 		else:
 			GlobalEvent.update_global_state.emit(power_value)
-		
 			
 	skills.clear()
 	action_selected.clear()
