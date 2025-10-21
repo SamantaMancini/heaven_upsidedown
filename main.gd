@@ -21,6 +21,8 @@ extends Node2D
 @onready var action_label: Label = $CanvasLayer/Control/Player/Action_Label
 @onready var action_label_2: Label = $CanvasLayer/Control/Player2/Action_Label2
 @onready var action_label_3: Label = $CanvasLayer/Control/Player3/Action_Label3
+@onready var panel_2: Panel = $CanvasLayer/Control/Panel2
+@onready var title: Label = $CanvasLayer/Control/Panel2/Vbox/Title
 
 @export var start_num : int = 0
 @export var combination_1 : String
@@ -92,12 +94,18 @@ func draw_buttons_cure():
 func battle_end_conditions():
 	if progress_bar.value <= progress_bar.min_value:
 		battle_end = true
-		turn.text = "Game Over"
+		turn.hide()
+		name_enemies.hide()
 		panel.hide()
+		panel_2.show()
+		title.text = "Game Over"
 	if progress_bar.value >= progress_bar.max_value:
 		battle_end = true
-		turn.text = "Win"
+		turn.hide()
+		name_enemies.hide()
 		panel.hide()
+		panel_2.show()
+		title.text = "Win"
 		
 func selected_target(target_on: bool):
 	target = target_on
@@ -170,31 +178,21 @@ func selected_skill(id: String, button: Button, power: float, stamina: float, em
 	action_button_disabled(true)
 	remove_children()
 		
-func add_stamina_player_turn(player: Player):
-	if player.stats.stamina < 10:
-		player.stats.stamina += 1
-	else:
-		player.stats.stamina = 10
 		
 func player_turn():
 	if battle_end:
 		panel.hide()
 		return
-	
+		
+	for player in players:
+		player.stats.stamina += 1
 	player_counter = 0
 	turn.text = "Player Turn"
 	action_button_disabled(false)
 	start_off(true)
 	panel.show()
 	id_enemy = 0
-	for player in players:
-		match player.stats.id:
-			0:
-				add_stamina_player_turn(player)
-			1:
-				add_stamina_player_turn(player)
-			2:
-				add_stamina_player_turn(player)
+
 		
 func enemy_action_phase():
 	battle_end_conditions()
@@ -203,7 +201,6 @@ func enemy_action_phase():
 		turn.text = "Enemy Turn"
 		for enemy in enemies:
 			name_enemies.text = enemy.stats.name_char
-			enemy.stats.stamina += 1
 			await get_tree().create_timer(1).timeout
 			
 			match enemy.stats.id:
@@ -221,30 +218,29 @@ func enemy_action_phase():
 	
 func goblin_attack(enemy):
 	if enemy.stats.stamina >= 3:
-		name_enemies.text = "Goblin Attack"
 		GlobalEvent.remove_global_state.emit(enemy.stats.actions[1].power)
 		enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
+		name_enemies.text = enemy.stats.actions[1].id
 	elif enemy.stats.stamina >= 1:
 		GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
-		name_enemies.text = "Goblin Attack"
 		enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
+		name_enemies.text = enemy.stats.actions[0].id
 	else:
 		name_enemies.text = "Goblin Rest"
-		enemy.stats.stamina += 1
+		enemy.stats.stamina += 3
 		
 func blobby_attack(enemy):
-	if enemy.stats.stamina >= 2:
+	if enemy.stats.stamina >= 2 and shields <= 10:
 		GlobalEvent.add_shield_enemy.emit(enemy.stats.actions[1].power)
-		name_enemies.text = "Blobby Defence"
+		name_enemies.text = enemy.stats.actions[1].id
 		enemy.stats.stamina -= enemy.stats.actions[1].stamina_consumed
 	elif enemy.stats.stamina >= 1:
 		GlobalEvent.remove_global_state.emit(enemy.stats.actions[0].power)
-		name_enemies.text = "Blobby Attack"
+		name_enemies.text = enemy.stats.actions[0].id
 		enemy.stats.stamina -= enemy.stats.actions[0].stamina_consumed
-						
 	else:
 		name_enemies.text = "Blobby Rest"
-		enemy.stats.stamina += 1
+		enemy.stats.stamina += 3
 		
 func remove_points(damage: float):
 	if shields > 0:
@@ -310,7 +306,7 @@ func dance_group(comb: String):
 func hug_group(comb: String, stamina: float):
 	for player in players:
 		if comb == combination_2:
-			add_stamina_player_turn(player)
+			player.stats.stamina += 1
 	
 	skills.clear()
 	action_selected.clear()
@@ -410,6 +406,10 @@ func target_stamina_added(text: String):
 	action_label_3.text = text
 	selected_target(false)
 	GlobalEvent.update_button.emit()
+	if GlobalEvent.target_cura != -1:
+		GlobalEvent.add_stamina.emit(players[2].stats.actions[0].power, GlobalEvent.target_cura)
+		GlobalEvent.target_cura = -1
+	
 	
 func _on_cure_pressed() -> void:
 	GlobalEvent.target_cura = 0
@@ -430,15 +430,41 @@ func skill_consumed():
 		action_id = skill["id"]
 		power_value = skill["power"]
 	
-		if action_id == "kiss":
-			if GlobalEvent.target_cura != -1:
-				GlobalEvent.add_stamina.emit(power_value, GlobalEvent.target_cura)
-				GlobalEvent.target_cura = -1
-		elif action_id == "trust shield":
+		if action_id == "trust shield":
 			GlobalEvent.add_shield.emit(power_value)
-		else:
+		elif action_id != "kiss":
 			GlobalEvent.update_global_state.emit(power_value)
 			
 	skills.clear()
 	action_selected.clear()
 	enemy_action_phase()
+
+func restart_game():
+	id_player = 0
+	progress_bar.value = 0
+	start_num = 0
+	shields = 0
+	battle_end = false
+	panel_2.hide()
+	panel.show()
+	turn.show()
+	name_enemies.show()
+	player_counter = 0
+	player_emotions = ""
+	skills.clear()
+	action_selected.clear()
+	start_off(true)
+	action_button_disabled(false)
+	for player in players:
+		player.stats.stamina = 3
+		
+	for enemy in enemies:
+		enemy.stats.stamina = 2
+		
+func _on_start_game_pressed() -> void:
+	player_turn()
+	restart_game()
+
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()
