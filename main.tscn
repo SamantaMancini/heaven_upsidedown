@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://drtkuhohyhd7y"]
+[gd_scene load_steps=22 format=3 uid="uid://drtkuhohyhd7y"]
 
 [ext_resource type="Script" uid="uid://i5vh5c34pinp" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://cwxsurn25xrva" path="res://chars/players/player.tscn" id="1_ig7tw"]
 [ext_resource type="Resource" uid="uid://7pcl2k4pm55d" path="res://chars/players/stats/striker.tres" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://8260y6i3s2lg" path="res://sprites/Battleground3.png" id="2_4c57u"]
 [ext_resource type="PackedScene" uid="uid://ck67bmr7jicmn" path="res://chars/enemies/enemy.tscn" id="2_7mycd"]
 [ext_resource type="Script" uid="uid://wr0gogv12wnh" path="res://chars/players/stats/skill.gd" id="3_5vw27"]
 [ext_resource type="Resource" uid="uid://dvtk710t8shh7" path="res://chars/players/stats/defence.tres" id="4_1bvp3"]
@@ -120,9 +121,14 @@ enemies = [NodePath("CanvasLayer/Control/Enemy"), NodePath("CanvasLayer/Control/
 buttons_cure = [NodePath("CanvasLayer/Control/Player/Cure"), NodePath("CanvasLayer/Control/Player2/Cure_2"), NodePath("CanvasLayer/Control/Player3/Cure_3")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(577, 326)
+position = Vector2(956, 543)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_4c57u")
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
