@@ -127,14 +127,16 @@ func action_button_disabled(disabled: bool):
 	
 func skill_players():
 	action_button_disabled(true)
+	var font_add = preload("res://fonts/nes.ttf")
 	for player in players:
 		if id_player == player.stats.id:
 			for skill in player.stats.actions:
 				var button = Button.new()
 				button.text = skill.id.capitalize()
 				button.flat = true
-				button.add_theme_font_size_override("font_size", 30)
+				button.add_theme_font_size_override("font_size", 35)
 				button.add_theme_constant_override("outline_size", 5)
+				button.add_theme_font_override("font", font_add)
 				v_box_container_3.add_child(button)
 				button.connect("pressed", Callable(self, "selected_skill").bind(skill.id, button, skill.power, skill.stamina_consumed, skill.emotion))
 				button.connect("mouse_entered", Callable(self, "show_skill").bind(skill.id, skill.description, skill.power, skill.stamina_consumed))
@@ -144,8 +146,9 @@ func skill_players():
 	var delete_button = Button.new()
 	delete_button.text = "Cancel"
 	delete_button.flat = true
-	delete_button.add_theme_font_size_override("font_size", 30)
+	delete_button.add_theme_font_size_override("font_size", 35)
 	delete_button.add_theme_constant_override("outline_size", 5)
+	delete_button.add_theme_font_override("font", font_add)
 	delete_button.connect("pressed",  Callable(self, "_on_delete_button_pressed"))
 	v_box_container_3.add_child(delete_button)
 
@@ -160,36 +163,43 @@ func _on_delete_button_pressed():
 
 func show_skill(id: String, desc: String, power: float, stamina: float):
 	var new_title = Label.new()
+	var font_add = preload("res://fonts/nes.ttf")
 	new_title.text = id
-	new_title.add_theme_font_size_override("font_size", 25)
+	new_title.add_theme_font_size_override("font_size", 30)
 	new_title.add_theme_constant_override("outline_size", 5)
+	new_title.add_theme_font_override("font", font_add)
 	
 	var new_desc = Label.new()
 	new_desc.text = desc
 	new_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	new_desc.add_theme_font_size_override("font_size", 20)
+	new_desc.add_theme_font_size_override("font_size", 25)
 	new_desc.add_theme_constant_override("outline_size", 5)
+	new_desc.add_theme_font_override("font", font_add)
 	
 	var new_h_box = HBoxContainer.new()
 	var new_power = Label.new()
 	new_power.text = "Power"
-	new_power.add_theme_font_size_override("font_size", 20)
+	new_power.add_theme_font_size_override("font_size", 25)
 	new_power.add_theme_constant_override("outline_size", 5)
+	new_power.add_theme_font_override("font", font_add)
 	
 	var new_power_desc = Label.new()
 	new_power_desc.text = "+" + str(power)
-	new_power_desc.add_theme_font_size_override("font_size", 20)
+	new_power_desc.add_theme_font_size_override("font_size", 25)
 	new_power_desc.add_theme_constant_override("outline_size", 5)
+	new_power_desc.add_theme_font_override("font", font_add)
 	
 	var new_stamina = Label.new()
 	new_stamina.text = "Stamina"
-	new_stamina.add_theme_font_size_override("font_size", 20)
+	new_stamina.add_theme_font_size_override("font_size", 25)
 	new_stamina.add_theme_constant_override("outline_size", 5)
+	new_stamina.add_theme_font_override("font", font_add)
 	
 	var new_stamina_desc = Label.new()
 	new_stamina_desc.text = "-" + str(stamina)
-	new_stamina_desc.add_theme_font_size_override("font_size", 20)
+	new_stamina_desc.add_theme_font_size_override("font_size", 25)
 	new_stamina_desc.add_theme_constant_override("outline_size", 5)
+	new_stamina_desc.add_theme_font_override("font", font_add)
 	
 	new_h_box.add_child(new_power)
 	new_h_box.add_child(new_power_desc)

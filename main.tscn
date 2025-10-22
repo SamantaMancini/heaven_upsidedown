@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://drtkuhohyhd7y"]
+[gd_scene load_steps=29 format=3 uid="uid://drtkuhohyhd7y"]
 
 [ext_resource type="Script" uid="uid://i5vh5c34pinp" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://cwxsurn25xrva" path="res://chars/players/player.tscn" id="1_ig7tw"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://8260y6i3s2lg" path="res://sprites/Battleground3.png" id="2_4c57u"]
 [ext_resource type="PackedScene" uid="uid://ck67bmr7jicmn" path="res://chars/enemies/enemy.tscn" id="2_7mycd"]
 [ext_resource type="Script" uid="uid://wr0gogv12wnh" path="res://chars/players/stats/skill.gd" id="3_5vw27"]
+[ext_resource type="FontFile" uid="uid://dac2xhqm7k4om" path="res://fonts/nes.ttf" id="3_w48qg"]
 [ext_resource type="Resource" uid="uid://dvtk710t8shh7" path="res://chars/players/stats/defence.tres" id="4_1bvp3"]
 [ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="4_kek77"]
 [ext_resource type="Resource" uid="uid://i30gl3l5mqyf" path="res://chars/players/stats/curator.tres" id="5_lquwl"]
@@ -154,6 +155,8 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+z_index = -1
+layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
@@ -177,28 +180,31 @@ show_percentage = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 49.0
+offset_top = 3.0
+offset_bottom = 44.0
 grow_horizontal = 2
 alignment = 1
 
 [node name="0" type="Label" parent="CanvasLayer/Control/ProgressBar/HBoxContainer"]
+texture_filter = 1
 layout_mode = 2
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_constants/shadow_outline_size = 2
-theme_override_font_sizes/font_size = 35
+theme_override_constants/outline_size = 10
+theme_override_constants/shadow_outline_size = 0
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 48
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="10" type="Label" parent="CanvasLayer/Control/ProgressBar/HBoxContainer"]
+texture_filter = 1
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_constants/shadow_outline_size = 2
-theme_override_font_sizes/font_size = 35
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 48
 text = "/10"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -207,10 +213,10 @@ vertical_alignment = 1
 modulate = Color(0.240027, 0.483242, 2.88785e-07, 1)
 texture_filter = 1
 layout_mode = 2
-offset_left = 1007.0
-offset_top = 14.0
-offset_right = 1174.0
-offset_bottom = 36.0
+offset_left = 1013.0
+offset_top = 18.0
+offset_right = 1175.0
+offset_bottom = 39.0
 size_flags_horizontal = 3
 theme_override_styles/background = SubResource("StyleBoxEmpty_ycdy4")
 theme_override_styles/fill = SubResource("StyleBoxTexture_w48qg")
@@ -252,21 +258,25 @@ layout_mode = 0
 offset_top = 560.0
 offset_right = 239.0
 offset_bottom = 884.0
-theme_override_constants/separation = 215
+theme_override_constants/separation = 255
 
 [node name="Name Enemies" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
+texture_filter = 1
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "ccccccc"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Turn" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
+texture_filter = 1
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Turno "
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -300,30 +310,34 @@ flat = true
 
 [node name="Cure" type="Button" parent="CanvasLayer/Control/Player"]
 visible = false
+texture_filter = 1
 offset_left = -269.0
 offset_top = 3.0
 offset_right = -121.0
 offset_bottom = 57.0
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Heal Felix"
 flat = true
 
 [node name="Action_Label" type="Label" parent="CanvasLayer/Control/Player"]
 visible = false
+texture_filter = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -59.0
-offset_top = -117.0
+offset_top = -125.0
 offset_right = 51.0
 offset_bottom = -74.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "fff"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -354,7 +368,8 @@ offset_top = 3.0
 offset_right = -68.0
 offset_bottom = 53.0
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Heal Bor"
 flat = true
 
@@ -372,7 +387,8 @@ offset_bottom = -69.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "fff"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -403,7 +419,8 @@ offset_top = 3.0
 offset_right = -61.0
 offset_bottom = 53.0
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Heal Nayeli"
 flat = true
 
@@ -421,13 +438,13 @@ offset_bottom = -79.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "fff"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Control"]
-z_index = 1
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -463,20 +480,21 @@ theme_override_constants/separation = 120
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = -5
 alignment = 1
 
 [node name="Name" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Name"
 vertical_alignment = 1
 
 [node name="Role" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Role"
 vertical_alignment = 1
 
@@ -487,7 +505,8 @@ theme_override_constants/separation = 5
 [node name="Stamina" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Stamina"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -495,7 +514,8 @@ vertical_alignment = 1
 [node name="StaMin" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -503,7 +523,8 @@ vertical_alignment = 1
 [node name="StaMax" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "/10"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -515,7 +536,8 @@ theme_override_constants/separation = 5
 [node name="Will" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Will"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -523,7 +545,8 @@ vertical_alignment = 1
 [node name="WillV" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -535,7 +558,8 @@ theme_override_constants/separation = 5
 [node name="Control" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Control"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -543,7 +567,8 @@ vertical_alignment = 1
 [node name="ControlV" type="Label" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "0"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
@@ -553,21 +578,24 @@ alignment = 1
 [node name="Action" type="Button" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Action"
 flat = true
 
 [node name="Rest" type="Button" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 text = "Rest"
 flat = true
 
 [node name="Flee" type="Button" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 disabled = true
 text = "Flee"
 flat = true
@@ -587,7 +615,8 @@ alignment = 1
 [node name="Start" type="Button" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 disabled = true
 text = "Start"
 flat = true
@@ -595,7 +624,8 @@ flat = true
 [node name="Hug" type="Button" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 disabled = true
 text = "Hug "
 flat = true
@@ -603,7 +633,8 @@ flat = true
 [node name="Dance" type="Button" parent="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4"]
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 35
 disabled = true
 text = "Dance"
 flat = true
@@ -636,28 +667,34 @@ offset_right = 146.0
 offset_bottom = 94.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Title" type="Label" parent="CanvasLayer/Control/Panel2/Vbox"]
+texture_filter = 1
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 45
 text = "Game Over"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StartGame" type="Button" parent="CanvasLayer/Control/Panel2/Vbox"]
+texture_filter = 1
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 38
 text = "Start"
 flat = true
 
 [node name="Quit" type="Button" parent="CanvasLayer/Control/Panel2/Vbox"]
+texture_filter = 1
 layout_mode = 2
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_w48qg")
+theme_override_font_sizes/font_size = 38
 text = "Quit"
 flat = true
 
