@@ -2,6 +2,7 @@ extends Resource
 class_name Stat
 
 @export var id : int
+@export var image: Texture2D
 @export var name_char : String
 @export var role : String
 @export var stamina : float

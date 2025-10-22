@@ -3,7 +3,7 @@ extends Node2D
 @onready var progress_bar: ProgressBar = $CanvasLayer/Control/ProgressBar
 @onready var h_box_container: HBoxContainer = $CanvasLayer/Control/ProgressBar/HBoxContainer
 @onready var _0: Label = $"CanvasLayer/Control/ProgressBar/HBoxContainer/0"
-@onready var _0s: Label = $"CanvasLayer/Control/ProgressBar/0s"
+@onready var _0s: ProgressBar = $"CanvasLayer/Control/ProgressBar/0s"
 @onready var name_enemies: Label = $"CanvasLayer/Control/VBoxContainer/Name Enemies"
 @onready var turn: Label = $CanvasLayer/Control/VBoxContainer/Turn
 @onready var name_char: Label = $CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/Name
@@ -23,6 +23,10 @@ extends Node2D
 @onready var action_label_3: Label = $CanvasLayer/Control/Player3/Action_Label3
 @onready var panel_2: Panel = $CanvasLayer/Control/Panel2
 @onready var title: Label = $CanvasLayer/Control/Panel2/Vbox/Title
+@onready var image: TextureRect = $CanvasLayer/Control/Panel/Image
+@onready var v_box_container_5: VBoxContainer = $CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer5
+@onready var v_box_container_4: VBoxContainer = $CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4
+
 
 @export var start_num : int = 0
 @export var combination_1 : String
@@ -30,8 +34,9 @@ extends Node2D
 @export var players : Array[Player]
 @export var enemies : Array[Enemy]
 @export var buttons_cure : Array[Button]
+@export var button_players : Array[Button]
 
-var shields = 0
+var shields : float = 0
 var id_enemy = 0
 var id_player = 0
 var player_emotions = ""
@@ -44,7 +49,7 @@ var action_selected = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_0.text = str(start_num)
-	_0s.text = str(shields)
+	_0s.value = shields
 	name_enemies.text = enemies[id_enemy].stats.name_char
 	stats_player()
 	change_color_player(0, Color.YELLOW)
@@ -75,9 +80,10 @@ func _process(delta: float) -> void:
 	battle_end_conditions()
 	stats_player()
 	_0.text = str(start_num)
-	_0s.text = str(shields)
+	_0s.value = shields
 
 func stats_player():
+	image.texture = players[id_player].stats.image
 	name_char.text = players[id_player].stats.name_char
 	role.text = players[id_player].stats.role
 	sta_min.text = str(players[id_player].stats.stamina)
@@ -131,6 +137,8 @@ func skill_players():
 				button.add_theme_constant_override("outline_size", 5)
 				v_box_container_3.add_child(button)
 				button.connect("pressed", Callable(self, "selected_skill").bind(skill.id, button, skill.power, skill.stamina_consumed, skill.emotion))
+				button.connect("mouse_entered", Callable(self, "show_skill").bind(skill.id, skill.description, skill.power, skill.stamina_consumed))
+				button.connect("mouse_exited", Callable(self, "remove_skill"))
 				if skill.stamina_consumed > player.stats.stamina:
 					button.disabled = true
 	var delete_button = Button.new()
@@ -149,6 +157,54 @@ func remove_children():
 func _on_delete_button_pressed():
 	action_button_disabled(false)
 	remove_children()
+
+func show_skill(id: String, desc: String, power: float, stamina: float):
+	var new_title = Label.new()
+	new_title.text = id
+	new_title.add_theme_font_size_override("font_size", 25)
+	new_title.add_theme_constant_override("outline_size", 5)
+	
+	var new_desc = Label.new()
+	new_desc.text = desc
+	new_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	new_desc.add_theme_font_size_override("font_size", 20)
+	new_desc.add_theme_constant_override("outline_size", 5)
+	
+	var new_h_box = HBoxContainer.new()
+	var new_power = Label.new()
+	new_power.text = "Power"
+	new_power.add_theme_font_size_override("font_size", 20)
+	new_power.add_theme_constant_override("outline_size", 5)
+	
+	var new_power_desc = Label.new()
+	new_power_desc.text = "+" + str(power)
+	new_power_desc.add_theme_font_size_override("font_size", 20)
+	new_power_desc.add_theme_constant_override("outline_size", 5)
+	
+	var new_stamina = Label.new()
+	new_stamina.text = "Stamina"
+	new_stamina.add_theme_font_size_override("font_size", 20)
+	new_stamina.add_theme_constant_override("outline_size", 5)
+	
+	var new_stamina_desc = Label.new()
+	new_stamina_desc.text = "-" + str(stamina)
+	new_stamina_desc.add_theme_font_size_override("font_size", 20)
+	new_stamina_desc.add_theme_constant_override("outline_size", 5)
+	
+	new_h_box.add_child(new_power)
+	new_h_box.add_child(new_power_desc)
+	new_h_box.add_child(new_stamina)
+	new_h_box.add_child(new_stamina_desc)
+	v_box_container_5.add_child(new_title)
+	v_box_container_5.add_child(new_desc)
+	v_box_container_5.add_child(new_h_box)
+	v_box_container_4.hide()
+	
+func remove_skill():
+	for child in v_box_container_5.get_children():
+		v_box_container_5.remove_child(child)
+		child.queue_free()
+	v_box_container_4.show()
 		
 func selected_skill(id: String, button: Button, power: float, stamina: float, emotion: String):
 	var skill_info = {
@@ -183,9 +239,11 @@ func player_turn():
 	if battle_end:
 		panel.hide()
 		return
-		
 	for player in players:
-		player.stats.stamina += 1
+		if player.stats.stamina < 10:
+			player.stats.stamina += 1
+		else:
+			player.stats.stamina = 10
 	player_counter = 0
 	turn.text = "Player Turn"
 	action_button_disabled(false)
@@ -201,6 +259,10 @@ func enemy_action_phase():
 		turn.text = "Enemy Turn"
 		for enemy in enemies:
 			name_enemies.text = enemy.stats.name_char
+			if enemy.stats.stamina < 10:
+				enemy.stats.stamina += 1
+			else:
+				enemy.stats.stamina = 10
 			await get_tree().create_timer(1).timeout
 			
 			match enemy.stats.id:
@@ -243,7 +305,7 @@ func blobby_attack(enemy):
 		enemy.stats.stamina += 3
 		
 func remove_points(damage: float):
-	if shields > 0:
+	if shields > 0 and _0s.modulate == Color.WHITE:
 		if damage > shields:
 			var damage_overflow = damage - shields
 			shields = 0
@@ -268,30 +330,32 @@ func update_button():
 	
 	
 func add_points(damage: float):
-	if shields < 0:
+	if shields > 0 and _0s.modulate == Color.DARK_GREEN:
 		if damage > shields:
-			var damage_overflow = damage + shields
+			var damage_overflow = damage - shields
 			shields = 0
 			progress_bar.value += damage_overflow
 			start_num += damage_overflow
 		else:
-			shields += damage
+			shields -= damage
 	else:
 		progress_bar.value += damage
 		start_num += damage
 			
 
 func add_shield(shield: float):
-	if shields <= 0:
-		shields = shield
-	else:
-		shields += shield
+		if _0s.modulate != Color.WHITE:
+			shields = shield
+			_0s.modulate = Color.WHITE
+		else:
+			shields += shield
 
 func add_shield_enemy(shield: float):
-	if shields >= 0:
-		shields = -shield
+	if shields >= 0 and _0s.modulate == Color.WHITE:
+		shields = shield
+		_0s.modulate = Color.DARK_GREEN
 	else:
-		shields -= shield
+		shields += shield
 
 func dance_group(comb: String):
 	var damage = 5
@@ -306,7 +370,8 @@ func dance_group(comb: String):
 func hug_group(comb: String, stamina: float):
 	for player in players:
 		if comb == combination_2:
-			player.stats.stamina += 1
+			if player.stats.stamina < 10:
+				player.stats.stamina += 1
 	
 	skills.clear()
 	action_selected.clear()
@@ -375,11 +440,11 @@ func _on_action_pressed() -> void:
 	skill_players()
 
 func change_color_player(id: int, color: Color):
-	for i in range(players.size()):
+	for i in range(button_players.size()):
 		if i == id:
-			players[i].sprite_2d.modulate = color
+			button_players[i].modulate = color
 		else:
-			players[i].sprite_2d.modulate = Color.WHITE
+			button_players[i].modulate = Color.WHITE
 	
 func _on_player_pressed() -> void:
 	id_player = 0
@@ -417,11 +482,11 @@ func _on_cure_pressed() -> void:
 	
 func _on_cure_2_pressed() -> void:
 	GlobalEvent.target_cura = 1
-	target_stamina_added("Trust stamina added")
+	target_stamina_added("Bor stamina added")
 
 func _on_cure_3_pressed() -> void:
 	GlobalEvent.target_cura = 2
-	target_stamina_added("Heart stamina added")
+	target_stamina_added("Nayeli stamina added")
 
 func skill_consumed():
 	var action_id = null
@@ -430,7 +495,7 @@ func skill_consumed():
 		action_id = skill["id"]
 		power_value = skill["power"]
 	
-		if action_id == "trust shield":
+		if action_id == "Fides":
 			GlobalEvent.add_shield.emit(power_value)
 		elif action_id != "kiss":
 			GlobalEvent.update_global_state.emit(power_value)

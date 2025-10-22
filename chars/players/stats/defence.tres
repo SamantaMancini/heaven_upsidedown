@@ -5,26 +5,26 @@
 
 [sub_resource type="Resource" id="Resource_gjom1"]
 script = ExtResource("2_gjom1")
-id = "trust shield"
+id = "Fides"
 power = 2.0
 stamina_consumed = 2
-description = ""
+description = "Adds 2 Trust Shields to global meter"
 emotion = "trust"
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [sub_resource type="Resource" id="Resource_8o3f5"]
 script = ExtResource("2_gjom1")
-id = "trust song"
+id = "Elpidius song"
 power = 2.0
 stamina_consumed = 1
-description = ""
+description = "A faithful tune that powers up the global bar"
 emotion = "trust"
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]
 script = ExtResource("1_4eme5")
 id = 1
-name_char = "Trust"
+name_char = "Bor"
 role = "Defence"
 stamina = 2.0
 will = 1

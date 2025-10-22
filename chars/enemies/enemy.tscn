@@ -1,12 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://ck67bmr7jicmn"]
+[gd_scene load_steps=2 format=3 uid="uid://ck67bmr7jicmn"]
 
 [ext_resource type="Script" uid="uid://basyc1cwh8h3g" path="res://chars/enemies/scripts/enemy.gd" id="1_qjw5v"]
-[ext_resource type="Texture2D" uid="uid://dr6h8wuopg277" path="res://icon.svg" id="2_4d6a2"]
 
 [node name="Enemy" type="Node2D"]
 script = ExtResource("1_qjw5v")
-sprite = ExtResource("2_4d6a2")
-color_debug = Color(1, 0, 0, 1)
-
-[node name="EnemySprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_4d6a2")

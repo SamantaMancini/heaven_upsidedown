@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://drtkuhohyhd7y"]
+[gd_scene load_steps=28 format=3 uid="uid://drtkuhohyhd7y"]
 
 [ext_resource type="Script" uid="uid://i5vh5c34pinp" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://cwxsurn25xrva" path="res://chars/players/player.tscn" id="1_ig7tw"]
@@ -9,6 +9,9 @@
 [ext_resource type="Resource" uid="uid://dvtk710t8shh7" path="res://chars/players/stats/defence.tres" id="4_1bvp3"]
 [ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="4_kek77"]
 [ext_resource type="Resource" uid="uid://i30gl3l5mqyf" path="res://chars/players/stats/curator.tres" id="5_lquwl"]
+[ext_resource type="Texture2D" uid="uid://q4g1c2sgdctr" path="res://sprites/goblin.png" id="6_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://dp6u124vswmtq" path="res://sprites/New_Piskel.png" id="7_w48qg"]
+[ext_resource type="Texture2D" uid="uid://bvywvb1mxtug1" path="res://sprites/characters.png" id="8_efxa6"]
 [ext_resource type="Texture2D" uid="uid://dr6h8wuopg277" path="res://icon.svg" id="9_kek77"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vw27"]
@@ -24,6 +27,13 @@ border_width_left = 4
 border_width_top = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ycdy4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w48qg"]
+texture = ExtResource("8_efxa6")
+axis_stretch_horizontal = 1
+region_rect = Rect2(0, 63.9997, 16.7706, 13.8796)
 
 [sub_resource type="Resource" id="Resource_5vw27"]
 script = ExtResource("3_5vw27")
@@ -112,23 +122,27 @@ control = 1
 actions = Array[ExtResource("3_5vw27")]([SubResource("Resource_w48qg"), SubResource("Resource_vivmo")])
 metadata/_custom_type_script = "uid://benuj1836edrx"
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("players", "enemies", "buttons_cure")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycdy4"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("players", "enemies", "buttons_cure", "button_players")]
 script = ExtResource("1_h2yge")
 combination_1 = "happytrustlove"
 combination_2 = "trustlove"
 players = [NodePath("CanvasLayer/Control/Player"), NodePath("CanvasLayer/Control/Player2"), NodePath("CanvasLayer/Control/Player3")]
 enemies = [NodePath("CanvasLayer/Control/Enemy"), NodePath("CanvasLayer/Control/Enemy2"), NodePath("CanvasLayer/Control/Enemy3")]
 buttons_cure = [NodePath("CanvasLayer/Control/Player/Cure"), NodePath("CanvasLayer/Control/Player2/Cure_2"), NodePath("CanvasLayer/Control/Player3/Cure_3")]
+button_players = [NodePath("CanvasLayer/Control/Player/Player"), NodePath("CanvasLayer/Control/Player2/Player2"), NodePath("CanvasLayer/Control/Player3/Player3")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(956, 543)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
-offset_right = 1920.0
-offset_bottom = 1080.0
-texture = ExtResource("2_4c57u")
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -137,23 +151,34 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+texture = ExtResource("2_4c57u")
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Control"]
 layout_mode = 1
-offset_right = 1150.0
-offset_bottom = 50.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 52.0
+grow_horizontal = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_5vw27")
 theme_override_styles/fill = SubResource("StyleBoxFlat_kek77")
 min_value = -10.0
 max_value = 10.0
+step = 1.0
 rounded = true
 show_percentage = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/ProgressBar"]
-layout_mode = 0
-offset_left = 2.0
-offset_right = 1149.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
 offset_bottom = 49.0
+grow_horizontal = 2
 alignment = 1
 
 [node name="0" type="Label" parent="CanvasLayer/Control/ProgressBar/HBoxContainer"]
@@ -178,40 +203,56 @@ text = "/10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="0s" type="Label" parent="CanvasLayer/Control/ProgressBar"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 88.0
-offset_top = 4.0
-offset_right = 133.0
-offset_bottom = 46.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 30
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="0s" type="ProgressBar" parent="CanvasLayer/Control/ProgressBar"]
+modulate = Color(0.240027, 0.483242, 2.88785e-07, 1)
+texture_filter = 1
+layout_mode = 2
+offset_left = 1007.0
+offset_top = 14.0
+offset_right = 1174.0
+offset_bottom = 36.0
+size_flags_horizontal = 3
+theme_override_styles/background = SubResource("StyleBoxEmpty_ycdy4")
+theme_override_styles/fill = SubResource("StyleBoxTexture_w48qg")
+max_value = 10.0
+step = 1.0
+show_percentage = false
 
 [node name="Enemy" parent="CanvasLayer/Control" instance=ExtResource("2_7mycd")]
-position = Vector2(899, 145)
+position = Vector2(1321, 634)
 stats = SubResource("Resource_4c57u")
 
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control/Enemy"]
+texture_filter = 1
+scale = Vector2(4.844, 5.625)
+texture = ExtResource("6_ycdy4")
+
 [node name="Enemy2" parent="CanvasLayer/Control" instance=ExtResource("2_7mycd")]
-position = Vector2(577, 145)
-color_debug = Color(0, 0.641823, 0.31243, 1)
+position = Vector2(999, 616)
 stats = SubResource("Resource_efxa6")
 
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control/Enemy2"]
+texture_filter = 1
+scale = Vector2(6.7647, 7.5625)
+texture = ExtResource("7_w48qg")
+region_enabled = true
+region_rect = Rect2(0, 31.5, 34, 32.5)
+
 [node name="Enemy3" parent="CanvasLayer/Control" instance=ExtResource("2_7mycd")]
-position = Vector2(263, 145)
+position = Vector2(685, 626)
 stats = SubResource("Resource_2cqfq")
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control/Enemy3"]
+texture_filter = 1
+scale = Vector2(4.84375, 5.625)
+texture = ExtResource("6_ycdy4")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_top = 70.0
-offset_right = 195.0
-offset_bottom = 450.0
-theme_override_constants/separation = 295
+offset_top = 560.0
+offset_right = 239.0
+offset_bottom = 884.0
+theme_override_constants/separation = 215
 
 [node name="Name Enemies" type="Label" parent="CanvasLayer/Control/VBoxContainer"]
 layout_mode = 2
@@ -231,25 +272,41 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Player" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
-position = Vector2(263, 397)
+y_sort_enabled = true
+texture_filter = 1
+position = Vector2(685, 786)
 stats = ExtResource("2_0xm2m")
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control/Player"]
+scale = Vector2(5.115, 5.66379)
+texture = ExtResource("8_efxa6")
+region_enabled = true
+region_rect = Rect2(37.8569, 31.5, 17.6262, 32.0689)
 
 [node name="Player" type="Button" parent="CanvasLayer/Control/Player"]
 modulate = Color(1, 1, 1, 0)
-offset_left = -67.0
-offset_top = -63.0
-offset_right = 64.0
-offset_bottom = 60.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -88.0
+offset_right = 46.0
+offset_bottom = 65.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
 
 [node name="Cure" type="Button" parent="CanvasLayer/Control/Player"]
 visible = false
-offset_left = -68.0
-offset_top = -154.0
-offset_right = 82.0
-offset_bottom = -104.0
+offset_left = -269.0
+offset_top = 3.0
+offset_right = -121.0
+offset_bottom = 57.0
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
-text = "Cura Felix"
+text = "Heal Felix"
 flat = true
 
 [node name="Action_Label" type="Label" parent="CanvasLayer/Control/Player"]
@@ -259,10 +316,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -53.0
-offset_top = -108.0
-offset_right = 57.0
-offset_bottom = -65.0
+offset_left = -59.0
+offset_top = -117.0
+offset_right = 51.0
+offset_bottom = -74.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/outline_size = 5
@@ -272,25 +329,33 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Player2" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
-position = Vector2(577, 397)
+position = Vector2(999, 786)
 stats = ExtResource("4_1bvp3")
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control/Player2"]
+texture_filter = 1
+scale = Vector2(5.115, 5.664)
+texture = ExtResource("8_efxa6")
+region_enabled = true
+region_rect = Rect2(5.021, -0.329931, 19.767, 32.275)
 
 [node name="Player2" type="Button" parent="CanvasLayer/Control/Player2"]
 modulate = Color(1, 1, 1, 0)
-offset_left = -61.0
-offset_top = -64.0
-offset_right = 63.0
-offset_bottom = 61.0
+offset_left = -48.0
+offset_top = -90.0
+offset_right = 51.0
+offset_bottom = 74.0
+flat = true
 
 [node name="Cure_2" type="Button" parent="CanvasLayer/Control/Player2"]
 visible = false
-offset_left = -61.0
-offset_top = -154.0
-offset_right = 98.0
-offset_bottom = -104.0
+offset_left = -227.0
+offset_top = 3.0
+offset_right = -68.0
+offset_bottom = 53.0
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
-text = "Cura Trust"
+text = "Heal Bor"
 flat = true
 
 [node name="Action_Label2" type="Label" parent="CanvasLayer/Control/Player2"]
@@ -300,9 +365,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -55.0
+offset_left = -50.0
 offset_top = -112.0
-offset_right = 55.0
+offset_right = 60.0
 offset_bottom = -69.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -313,25 +378,33 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Player3" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
-position = Vector2(899, 397)
+position = Vector2(1321, 786)
 stats = ExtResource("5_lquwl")
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control/Player3"]
+texture_filter = 1
+scale = Vector2(5.115, 5.664)
+texture = ExtResource("8_efxa6")
+region_enabled = true
+region_rect = Rect2(71, -0.0760153, 22.117, 32.275)
 
 [node name="Player3" type="Button" parent="CanvasLayer/Control/Player3"]
 modulate = Color(1, 1, 1, 0)
-offset_left = -66.0
-offset_top = -62.0
-offset_right = 64.0
-offset_bottom = 59.0
+offset_left = -54.0
+offset_top = -91.0
+offset_right = 56.0
+offset_bottom = 74.0
+flat = true
 
 [node name="Cure_3" type="Button" parent="CanvasLayer/Control/Player3"]
 visible = false
-offset_left = -66.0
-offset_top = -154.0
-offset_right = 100.0
-offset_bottom = -104.0
+offset_left = -234.0
+offset_top = 3.0
+offset_right = -61.0
+offset_bottom = 53.0
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
-text = "Cura Heart"
+text = "Heal Nayeli"
 flat = true
 
 [node name="Action_Label3" type="Label" parent="CanvasLayer/Control/Player3"]
@@ -341,10 +414,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -55.0
-offset_top = -112.0
-offset_right = 55.0
-offset_bottom = -69.0
+offset_left = -75.0
+offset_top = -122.0
+offset_right = 35.0
+offset_bottom = -79.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/outline_size = 5
@@ -354,24 +427,25 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Control"]
+z_index = 1
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -3.0
-offset_top = -197.0
-offset_right = -1.0
-offset_bottom = 3.0
+offset_top = -207.0
+offset_right = -549.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ycdy4")
 
 [node name="Image" type="TextureRect" parent="CanvasLayer/Control/Panel"]
-layout_mode = 1
-offset_left = 4.0
-offset_right = 132.0
-offset_bottom = 128.0
-scale = Vector2(1.55078, 1.52344)
+layout_mode = 2
+offset_left = 19.0
+offset_top = 21.0
+offset_right = 206.0
+offset_bottom = 188.0
 texture = ExtResource("9_kek77")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Panel"]
@@ -379,12 +453,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 198.0
-offset_right = 1.0
+offset_left = 254.0
+offset_top = 10.0
+offset_right = -14.0
+offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 100
-alignment = 1
+theme_override_constants/separation = 120
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
 layout_mode = 2
@@ -498,6 +573,10 @@ text = "Flee"
 flat = true
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
 layout_mode = 2
 alignment = 1
 

@@ -8,15 +8,15 @@ script = ExtResource("2_irdp5")
 id = "kiss"
 power = 1.0
 stamina_consumed = 2
-description = ""
+description = "Adds 1 stamina point to your ally"
 emotion = "love"
 metadata/_custom_type_script = "uid://wr0gogv12wnh"
 
 [resource]
 script = ExtResource("1_3se0p")
 id = 2
-name_char = "Heart"
-role = "Curator"
+name_char = "Nayeli"
+role = "Healer"
 stamina = 2.0
 will = 1
 control = 1
