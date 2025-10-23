@@ -84,6 +84,7 @@ func _process(delta: float) -> void:
 
 func stats_player():
 	image.texture = players[id_player].stats.image
+	image.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	name_char.text = players[id_player].stats.name_char
 	role.text = players[id_player].stats.role
 	sta_min.text = str(players[id_player].stats.stamina)
@@ -139,10 +140,13 @@ func skill_players():
 				button.add_theme_font_override("font", font_add)
 				v_box_container_3.add_child(button)
 				button.connect("pressed", Callable(self, "selected_skill").bind(skill.id, button, skill.power, skill.stamina_consumed, skill.emotion))
-				button.connect("mouse_entered", Callable(self, "show_skill").bind(skill.id, skill.description, skill.power, skill.stamina_consumed))
-				button.connect("mouse_exited", Callable(self, "remove_skill"))
+				button.connect("mouse_entered", Callable(self, "show_skill").bind(skill.id, skill.description, skill.power, skill.stamina_consumed, button))
+				button.connect("mouse_exited", Callable(self, "remove_skill").bind(v_box_container_4))
 				if skill.stamina_consumed > player.stats.stamina:
 					button.disabled = true
+				if shields >= 10:
+					if skill.id == "Fides":
+						button.disabled = true
 	var delete_button = Button.new()
 	delete_button.text = "Cancel"
 	delete_button.flat = true
@@ -161,60 +165,62 @@ func _on_delete_button_pressed():
 	action_button_disabled(false)
 	remove_children()
 
-func show_skill(id: String, desc: String, power: float, stamina: float):
-	var new_title = Label.new()
-	var font_add = preload("res://fonts/nes.ttf")
-	new_title.text = id
-	new_title.add_theme_font_size_override("font_size", 30)
-	new_title.add_theme_constant_override("outline_size", 5)
-	new_title.add_theme_font_override("font", font_add)
+func show_skill(id: String, desc: String, power: float, stamina: float, button: Button):
+	if not button.disabled:
+		var new_title = Label.new()
+		var font_add = preload("res://fonts/nes.ttf")
+		new_title.text = id
+		new_title.add_theme_font_size_override("font_size", 30)
+		new_title.add_theme_constant_override("outline_size", 5)
+		new_title.add_theme_font_override("font", font_add)
+		
+		var new_desc = Label.new()
+		new_desc.text = desc
+		new_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		new_desc.add_theme_font_size_override("font_size", 25)
+		new_desc.add_theme_constant_override("outline_size", 5)
+		new_desc.add_theme_font_override("font", font_add)
+		
+		var new_h_box = HBoxContainer.new()
+		var new_power = Label.new()
+		new_power.text = "Power"
+		new_power.add_theme_font_size_override("font_size", 25)
+		new_power.add_theme_constant_override("outline_size", 5)
+		new_power.add_theme_font_override("font", font_add)
+		
+		var new_power_desc = Label.new()
+		new_power_desc.text = "+" + str(power)
+		new_power_desc.add_theme_font_size_override("font_size", 25)
+		new_power_desc.add_theme_constant_override("outline_size", 5)
+		new_power_desc.add_theme_font_override("font", font_add)
+		
+		var new_stamina = Label.new()
+		new_stamina.text = "Stamina"
+		new_stamina.add_theme_font_size_override("font_size", 25)
+		new_stamina.add_theme_constant_override("outline_size", 5)
+		new_stamina.add_theme_font_override("font", font_add)
+		
+		var new_stamina_desc = Label.new()
+		new_stamina_desc.text = "-" + str(stamina)
+		new_stamina_desc.add_theme_font_size_override("font_size", 25)
+		new_stamina_desc.add_theme_constant_override("outline_size", 5)
+		new_stamina_desc.add_theme_font_override("font", font_add)
+		
+		new_h_box.add_child(new_power)
+		new_h_box.add_child(new_power_desc)
+		new_h_box.add_child(new_stamina)
+		new_h_box.add_child(new_stamina_desc)
+		v_box_container_5.add_child(new_title)
+		v_box_container_5.add_child(new_desc)
+		v_box_container_5.add_child(new_h_box)
+		v_box_container_4.hide()
 	
-	var new_desc = Label.new()
-	new_desc.text = desc
-	new_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	new_desc.add_theme_font_size_override("font_size", 25)
-	new_desc.add_theme_constant_override("outline_size", 5)
-	new_desc.add_theme_font_override("font", font_add)
-	
-	var new_h_box = HBoxContainer.new()
-	var new_power = Label.new()
-	new_power.text = "Power"
-	new_power.add_theme_font_size_override("font_size", 25)
-	new_power.add_theme_constant_override("outline_size", 5)
-	new_power.add_theme_font_override("font", font_add)
-	
-	var new_power_desc = Label.new()
-	new_power_desc.text = "+" + str(power)
-	new_power_desc.add_theme_font_size_override("font_size", 25)
-	new_power_desc.add_theme_constant_override("outline_size", 5)
-	new_power_desc.add_theme_font_override("font", font_add)
-	
-	var new_stamina = Label.new()
-	new_stamina.text = "Stamina"
-	new_stamina.add_theme_font_size_override("font_size", 25)
-	new_stamina.add_theme_constant_override("outline_size", 5)
-	new_stamina.add_theme_font_override("font", font_add)
-	
-	var new_stamina_desc = Label.new()
-	new_stamina_desc.text = "-" + str(stamina)
-	new_stamina_desc.add_theme_font_size_override("font_size", 25)
-	new_stamina_desc.add_theme_constant_override("outline_size", 5)
-	new_stamina_desc.add_theme_font_override("font", font_add)
-	
-	new_h_box.add_child(new_power)
-	new_h_box.add_child(new_power_desc)
-	new_h_box.add_child(new_stamina)
-	new_h_box.add_child(new_stamina_desc)
-	v_box_container_5.add_child(new_title)
-	v_box_container_5.add_child(new_desc)
-	v_box_container_5.add_child(new_h_box)
-	v_box_container_4.hide()
-	
-func remove_skill():
+func remove_skill(v_box: VBoxContainer):
 	for child in v_box_container_5.get_children():
 		v_box_container_5.remove_child(child)
 		child.queue_free()
-	v_box_container_4.show()
+	v_box.show()
+	
 		
 func selected_skill(id: String, button: Button, power: float, stamina: float, emotion: String):
 	var skill_info = {
@@ -407,7 +413,45 @@ func _on_dance_pressed() -> void:
 	action_label.hide()
 	action_label_2.hide()
 	action_label_3.hide()
-
+	
+func _on_dance_mouse_entered() -> void:
+	if not dance.disabled:
+		var new_title = Label.new()
+		var font_add = preload("res://fonts/nes.ttf")
+		new_title.text = "Dance Group"
+		new_title.add_theme_font_size_override("font_size", 30)
+		new_title.add_theme_constant_override("outline_size", 5)
+		new_title.add_theme_font_override("font", font_add)
+		
+		var new_desc = Label.new()
+		new_desc.text = "A dance group that boots global meter."
+		new_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		new_desc.add_theme_font_size_override("font_size", 25)
+		new_desc.add_theme_constant_override("outline_size", 5)
+		new_desc.add_theme_font_override("font", font_add)
+		
+		var new_h_box = HBoxContainer.new()
+		var new_emotion = Label.new()
+		new_emotion.text = "Emotion: Happy+Trust+Love"
+		new_emotion.add_theme_font_size_override("font_size", 25)
+		new_emotion.add_theme_constant_override("outline_size", 5)
+		new_emotion.add_theme_font_override("font", font_add)
+		
+		var new_stamina = Label.new()
+		new_stamina.text = "Power: +5"
+		new_stamina.add_theme_font_size_override("font_size", 25)
+		new_stamina.add_theme_constant_override("outline_size", 5)
+		new_stamina.add_theme_font_override("font", font_add)
+		
+		new_h_box.add_child(new_emotion)
+		new_h_box.add_child(new_stamina)
+		v_box_container_5.add_child(new_title)
+		v_box_container_5.add_child(new_desc)
+		v_box_container_5.add_child(new_h_box)
+		
+func _on_dance_mouse_exited() -> void:
+	remove_skill(v_box_container_3)
+	
 func _on_hug_pressed() -> void:
 	GlobalEvent.combination_2.emit(player_emotions, 5)
 	player_emotions = ""
@@ -417,6 +461,44 @@ func _on_hug_pressed() -> void:
 	action_label_2.hide()
 	action_label_3.hide()
 
+func _on_hug_mouse_entered() -> void:
+	if not hug.disabled:
+		var new_title = Label.new()
+		var font_add = preload("res://fonts/nes.ttf")
+		new_title.text = "Hug Group"
+		new_title.add_theme_font_size_override("font_size", 30)
+		new_title.add_theme_constant_override("outline_size", 5)
+		new_title.add_theme_font_override("font", font_add)
+		
+		var new_desc = Label.new()
+		new_desc.text = "Add 1 point stamina to your group"
+		new_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		new_desc.add_theme_font_size_override("font_size", 25)
+		new_desc.add_theme_constant_override("outline_size", 5)
+		new_desc.add_theme_font_override("font", font_add)
+		
+		var new_h_box = HBoxContainer.new()
+		var new_emotion = Label.new()
+		new_emotion.text = "Emotion: Trust+Love"
+		new_emotion.add_theme_font_size_override("font_size", 25)
+		new_emotion.add_theme_constant_override("outline_size", 5)
+		new_emotion.add_theme_font_override("font", font_add)
+		
+		var new_stamina = Label.new()
+		new_stamina.text = "Stamina: +1"
+		new_stamina.add_theme_font_size_override("font_size", 25)
+		new_stamina.add_theme_constant_override("outline_size", 5)
+		new_stamina.add_theme_font_override("font", font_add)
+		
+		new_h_box.add_child(new_emotion)
+		new_h_box.add_child(new_stamina)
+		v_box_container_5.add_child(new_title)
+		v_box_container_5.add_child(new_desc)
+		v_box_container_5.add_child(new_h_box)
+
+func _on_hug_mouse_exited() -> void:
+	remove_skill(v_box_container_3)
+
 func start_off(disabled: bool):
 	start.disabled = disabled
 
@@ -424,7 +506,6 @@ func start_off(disabled: bool):
 func _on_rest_pressed() -> void:
 	players[id_player].stats.stamina += 1
 	player_counter += 1
-	print(player_counter)
 	
 	if not action_selected.has(id_player):
 		action_selected.append(id_player)

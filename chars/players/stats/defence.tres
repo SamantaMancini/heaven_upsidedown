@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="Stat" load_steps=5 format=3 uid="uid://dvtk710t8shh7"]
+[gd_resource type="Resource" script_class="Stat" load_steps=6 format=3 uid="uid://dvtk710t8shh7"]
 
 [ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="1_4eme5"]
+[ext_resource type="Texture2D" uid="uid://d1e7nsvx6vr7j" path="res://sprites/characters/chars_1.png" id="2_8o3f5"]
 [ext_resource type="Script" uid="uid://wr0gogv12wnh" path="res://chars/players/stats/skill.gd" id="2_gjom1"]
 
 [sub_resource type="Resource" id="Resource_gjom1"]
@@ -24,6 +25,7 @@ metadata/_custom_type_script = "uid://wr0gogv12wnh"
 [resource]
 script = ExtResource("1_4eme5")
 id = 1
+image = ExtResource("2_8o3f5")
 name_char = "Bor"
 role = "Defence"
 stamina = 2.0

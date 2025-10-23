@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://drtkuhohyhd7y"]
+[gd_scene load_steps=30 format=3 uid="uid://drtkuhohyhd7y"]
 
 [ext_resource type="Script" uid="uid://i5vh5c34pinp" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://cwxsurn25xrva" path="res://chars/players/player.tscn" id="1_ig7tw"]
@@ -9,6 +9,7 @@
 [ext_resource type="FontFile" uid="uid://dac2xhqm7k4om" path="res://fonts/nes.ttf" id="3_w48qg"]
 [ext_resource type="Resource" uid="uid://dvtk710t8shh7" path="res://chars/players/stats/defence.tres" id="4_1bvp3"]
 [ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="4_kek77"]
+[ext_resource type="Texture2D" uid="uid://beja6hy0fpi3v" path="res://sprites/characters/chars_6.png" id="4_vivmo"]
 [ext_resource type="Resource" uid="uid://i30gl3l5mqyf" path="res://chars/players/stats/curator.tres" id="5_lquwl"]
 [ext_resource type="Texture2D" uid="uid://q4g1c2sgdctr" path="res://sprites/goblin.png" id="6_ycdy4"]
 [ext_resource type="Texture2D" uid="uid://dp6u124vswmtq" path="res://sprites/New_Piskel.png" id="7_w48qg"]
@@ -31,10 +32,12 @@ border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ycdy4"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w48qg"]
-texture = ExtResource("8_efxa6")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2cqfq"]
+content_margin_left = 0.0
+texture = ExtResource("4_vivmo")
 axis_stretch_horizontal = 1
-region_rect = Rect2(0, 63.9997, 16.7706, 13.8796)
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 16.3301, 15.182)
 
 [sub_resource type="Resource" id="Resource_5vw27"]
 script = ExtResource("3_5vw27")
@@ -156,9 +159,12 @@ mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
 z_index = -1
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_4c57u")
 
@@ -192,7 +198,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
 theme_override_constants/shadow_outline_size = 0
 theme_override_fonts/font = ExtResource("3_w48qg")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 35
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -204,24 +210,22 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("3_w48qg")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 35
 text = "/10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="0s" type="ProgressBar" parent="CanvasLayer/Control/ProgressBar"]
-modulate = Color(0.240027, 0.483242, 2.88785e-07, 1)
 texture_filter = 1
 layout_mode = 2
-offset_left = 1013.0
+offset_left = 1018.0
 offset_top = 18.0
-offset_right = 1175.0
-offset_bottom = 39.0
+offset_right = 1180.0
+offset_bottom = 33.0
 size_flags_horizontal = 3
 theme_override_styles/background = SubResource("StyleBoxEmpty_ycdy4")
-theme_override_styles/fill = SubResource("StyleBoxTexture_w48qg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_2cqfq")
 max_value = 10.0
-step = 1.0
 show_percentage = false
 
 [node name="Enemy" parent="CanvasLayer/Control" instance=ExtResource("2_7mycd")]
@@ -343,6 +347,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Player2" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
+texture_filter = 1
 position = Vector2(999, 786)
 stats = ExtResource("4_1bvp3")
 
@@ -394,6 +399,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Player3" parent="CanvasLayer/Control" instance=ExtResource("1_ig7tw")]
+texture_filter = 1
 position = Vector2(1321, 786)
 stats = ExtResource("5_lquwl")
 
@@ -472,11 +478,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 254.0
 offset_top = 10.0
-offset_right = -14.0
+offset_right = -10.0
 offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 120
+theme_override_constants/separation = 70
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
 layout_mode = 2
@@ -604,10 +610,6 @@ flat = true
 layout_mode = 2
 alignment = 1
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
-layout_mode = 2
-alignment = 1
-
 [node name="VBoxContainer4" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
 layout_mode = 2
 alignment = 1
@@ -638,6 +640,10 @@ theme_override_font_sizes/font_size = 35
 disabled = true
 text = "Dance"
 flat = true
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="CanvasLayer/Control/Panel/HBoxContainer"]
+layout_mode = 2
+alignment = 1
 
 [node name="Panel2" type="Panel" parent="CanvasLayer/Control"]
 visible = false
@@ -707,7 +713,11 @@ flat = true
 [connection signal="pressed" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer2/Action" to="." method="_on_action_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer2/Rest" to="." method="_on_rest_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4/Start" to="." method="_on_start_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4/Hug" to="." method="_on_hug_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4/Hug" to="." method="_on_hug_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4/Hug" to="." method="_on_hug_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4/Dance" to="." method="_on_dance_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4/Dance" to="." method="_on_dance_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer4/Dance" to="." method="_on_dance_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel2/Vbox/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel2/Vbox/Quit" to="." method="_on_quit_pressed"]

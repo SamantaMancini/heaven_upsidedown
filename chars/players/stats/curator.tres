@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="Stat" load_steps=4 format=3 uid="uid://i30gl3l5mqyf"]
+[gd_resource type="Resource" script_class="Stat" load_steps=5 format=3 uid="uid://i30gl3l5mqyf"]
 
 [ext_resource type="Script" uid="uid://benuj1836edrx" path="res://chars/players/stats/stats.gd" id="1_3se0p"]
 [ext_resource type="Script" uid="uid://wr0gogv12wnh" path="res://chars/players/stats/skill.gd" id="2_irdp5"]
+[ext_resource type="Texture2D" uid="uid://biyxfn3w4jrv7" path="res://sprites/characters/chars_3.png" id="2_luwfv"]
 
 [sub_resource type="Resource" id="Resource_irdp5"]
 script = ExtResource("2_irdp5")
@@ -15,6 +16,7 @@ metadata/_custom_type_script = "uid://wr0gogv12wnh"
 [resource]
 script = ExtResource("1_3se0p")
 id = 2
+image = ExtResource("2_luwfv")
 name_char = "Nayeli"
 role = "Healer"
 stamina = 2.0
