@@ -1,0 +1,171 @@
+[gd_scene load_steps=8 format=3 uid="uid://doem5x5pn80bu"]
+
+[ext_resource type="Shader" uid="uid://b17y4wr68x3cl" path="res://main_menu/material/shader.gdshader" id="1_3shxk"]
+[ext_resource type="Script" uid="uid://badq6lcmv56i1" path="res://main_menu/main_menu.gd" id="1_bws42"]
+[ext_resource type="Texture2D" uid="uid://8260y6i3s2lg" path="res://sprites/Battleground3.png" id="2_bws42"]
+[ext_resource type="PackedScene" uid="uid://drtkuhohyhd7y" path="res://main.tscn" id="2_ia84y"]
+[ext_resource type="FontFile" uid="uid://dac2xhqm7k4om" path="res://fonts/nes.ttf" id="3_3f7m4"]
+[ext_resource type="Script" uid="uid://dxes4i05v087p" path="res://main_menu/settings/settings.gd" id="5_3f7m4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3shxk"]
+shader = ExtResource("1_3shxk")
+shader_parameter/blur_amount = 3.0
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bws42")
+level = ExtResource("2_ia84y")
+
+[node name="BackGround" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bws42")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_3shxk")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_right = 8.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+offset_left = 104.0
+offset_right = 929.0
+offset_bottom = 155.0
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("3_3f7m4")
+theme_override_font_sizes/font_size = 100
+text = "Heaven UpsideDown"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -130.5
+offset_right = 450.0
+offset_bottom = 130.5
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Start" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_3f7m4")
+theme_override_font_sizes/font_size = 80
+text = "Start"
+flat = true
+
+[node name="Settings" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_3f7m4")
+theme_override_font_sizes/font_size = 80
+text = "Settings"
+flat = true
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_3f7m4")
+theme_override_font_sizes/font_size = 80
+text = "Quit"
+flat = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 34.0
+offset_top = -205.0
+offset_right = 654.0
+offset_bottom = 207.0
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Master" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_3f7m4")
+theme_override_font_sizes/font_size = 80
+text = "Master"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MasterSlider" type="HSlider" parent="VBoxContainer2"]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+script = ExtResource("5_3f7m4")
+
+[node name="BackgroundMusic" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_3f7m4")
+theme_override_font_sizes/font_size = 80
+text = "BackGround Music"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MusicSlider" type="HSlider" parent="VBoxContainer2"]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+script = ExtResource("5_3f7m4")
+audio_bus_name = "BGM"
+
+[node name="SFX" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_3f7m4")
+theme_override_font_sizes/font_size = 80
+text = "Sound Effects"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SfxSlider" type="HSlider" parent="VBoxContainer2"]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+script = ExtResource("5_3f7m4")
+audio_bus_name = "SFX"
+
+[node name="Back" type="Button" parent="VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_3f7m4")
+theme_override_font_sizes/font_size = 80
+text = "Back"
+flat = true
+
+[connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="value_changed" from="VBoxContainer2/MasterSlider" to="VBoxContainer2/MasterSlider" method="_on_value_changed"]
+[connection signal="value_changed" from="VBoxContainer2/MusicSlider" to="VBoxContainer2/MusicSlider" method="_on_value_changed"]
+[connection signal="value_changed" from="VBoxContainer2/SfxSlider" to="VBoxContainer2/SfxSlider" method="_on_value_changed"]
+[connection signal="pressed" from="VBoxContainer2/Back" to="." method="_on_back_pressed"]

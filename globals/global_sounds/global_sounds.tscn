@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8y1jjf3r1l0w"]
+
+[ext_resource type="AudioStream" uid="uid://dgd66tvj3glv3" path="res://sounds/1- Brave reaction.ogg" id="1_5yxl4"]
+[ext_resource type="AudioStream" uid="uid://cvdekkw3msv5g" path="res://sounds/Fantasy_UI (19).wav" id="2_e3b2g"]
+
+[node name="GlobalSounds" type="Node2D"]
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_5yxl4")
+volume_db = -10.0
+autoplay = true
+bus = &"BGM"
+
+[node name="SFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_e3b2g")
+bus = &"SFX"

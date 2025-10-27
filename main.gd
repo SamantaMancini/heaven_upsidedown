@@ -66,6 +66,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("Escape"):
+		get_tree().quit()
+		
 	if players[id_player].stats.stamina >= 10:
 		buttons_cure[id_player].disabled = true
 		rest.disabled = true
@@ -164,6 +167,7 @@ func remove_children():
 func _on_delete_button_pressed():
 	action_button_disabled(false)
 	remove_children()
+	GlobalSounds.get_node("SFX").play()
 
 func show_skill(id: String, desc: String, power: float, stamina: float, button: Button):
 	if not button.disabled:
@@ -223,6 +227,7 @@ func remove_skill(v_box: VBoxContainer):
 	
 		
 func selected_skill(id: String, button: Button, power: float, stamina: float, emotion: String):
+	GlobalSounds.get_node("SFX").play()
 	var skill_info = {
 		"id": id,
 		"power": power
@@ -374,6 +379,7 @@ func add_shield_enemy(shield: float):
 		shields += shield
 
 func dance_group(comb: String):
+	GlobalSounds.get_node("SFX").play()
 	var damage = 5
 	if comb == combination_1:
 		GlobalEvent.update_global_state.emit(damage)
@@ -384,6 +390,7 @@ func dance_group(comb: String):
 	enemy_action_phase()
 	
 func hug_group(comb: String, stamina: float):
+	GlobalSounds.get_node("SFX").play()
 	for player in players:
 		if comb == combination_2:
 			if player.stats.stamina < 10:
@@ -397,6 +404,7 @@ func hug_group(comb: String, stamina: float):
 
 func _on_start_pressed() -> void:
 	GlobalEvent.start_process.emit()
+	GlobalSounds.get_node("SFX").play()
 	start_off(true)
 	combination_disabled(true, true)
 	player_emotions = ""
@@ -405,6 +413,7 @@ func _on_start_pressed() -> void:
 	action_label_3.hide()
 		
 func _on_dance_pressed() -> void:
+	GlobalSounds.get_node("SFX").play()
 	var skill_sta = null
 	GlobalEvent.combination.emit(player_emotions)
 	player_emotions = ""
@@ -506,7 +515,7 @@ func start_off(disabled: bool):
 func _on_rest_pressed() -> void:
 	players[id_player].stats.stamina += 1
 	player_counter += 1
-	
+	GlobalSounds.get_node("SFX").play()
 	if not action_selected.has(id_player):
 		action_selected.append(id_player)
 	action_button_disabled(true)
@@ -529,6 +538,7 @@ func action_selected_player(id: int):
 		
 func _on_action_pressed() -> void:
 	skill_players()
+	GlobalSounds.get_node("SFX").play()
 
 func change_color_player(id: int, color: Color):
 	for i in range(button_players.size()):
@@ -542,20 +552,22 @@ func _on_player_pressed() -> void:
 	change_color_player(id_player, Color.YELLOW)
 	action_selected_player(id_player)
 	remove_children()
-	
+	GlobalSounds.get_node("SFX").play()
 	
 func _on_player_2_pressed() -> void:
 	id_player = 1
 	change_color_player(id_player, Color.YELLOW)
 	action_selected_player(id_player)
 	remove_children()
+	GlobalSounds.get_node("SFX").play()
 	
 func _on_player_3_pressed() -> void:
 	id_player = 2
 	change_color_player(id_player, Color.YELLOW)
 	action_selected_player(id_player)
 	remove_children()
-
+	GlobalSounds.get_node("SFX").play()
+	
 func target_stamina_added(text: String):
 	players[2].stats.stamina -= players[2].stats.actions[0].stamina_consumed
 	action_label_3.show()
@@ -570,14 +582,17 @@ func target_stamina_added(text: String):
 func _on_cure_pressed() -> void:
 	GlobalEvent.target_cura = 0
 	target_stamina_added("Felix stamina added")
+	GlobalSounds.get_node("SFX").play()
 	
 func _on_cure_2_pressed() -> void:
 	GlobalEvent.target_cura = 1
 	target_stamina_added("Bor stamina added")
+	GlobalSounds.get_node("SFX").play()
 
 func _on_cure_3_pressed() -> void:
 	GlobalEvent.target_cura = 2
 	target_stamina_added("Nayeli stamina added")
+	GlobalSounds.get_node("SFX").play()
 
 func skill_consumed():
 	var action_id = null
@@ -620,7 +635,10 @@ func restart_game():
 func _on_start_game_pressed() -> void:
 	player_turn()
 	restart_game()
+	GlobalSounds.get_node("SFX").play()
 
 
 func _on_quit_pressed() -> void:
+	GlobalSounds.get_node("SFX").play()
+	await get_tree().create_timer(1).timeout
 	get_tree().quit()
