@@ -1,5 +1,5 @@
 extends Node2D
-
+@onready var v_box_container: VBoxContainer = $CanvasLayer/Control/VBoxContainer
 @onready var progress_bar: ProgressBar = $CanvasLayer/Control/ProgressBar
 @onready var h_box_container: HBoxContainer = $CanvasLayer/Control/ProgressBar/HBoxContainer
 @onready var _0: Label = $"CanvasLayer/Control/ProgressBar/HBoxContainer/0"
@@ -62,7 +62,7 @@ func _ready() -> void:
 	GlobalEvent.add_shield_enemy.connect(add_shield_enemy)
 	GlobalEvent.add_stamina.connect(stamina)
 	GlobalEvent.start_process.connect(skill_consumed)
-	player_turn()
+	GlobalEvent.end_tutorial.connect(start_game)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -85,6 +85,10 @@ func _process(delta: float) -> void:
 	_0.text = str(start_num)
 	_0s.value = shields
 
+func start_game():
+	player_turn()
+	v_box_container.show()
+	
 func stats_player():
 	image.texture = players[id_player].stats.image
 	image.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -109,6 +113,8 @@ func battle_end_conditions():
 		panel.hide()
 		panel_2.show()
 		title.text = "Game Over"
+		GlobalSounds.get_node("Music").stop()
+		
 	if progress_bar.value >= progress_bar.max_value:
 		battle_end = true
 		turn.hide()
@@ -116,6 +122,7 @@ func battle_end_conditions():
 		panel.hide()
 		panel_2.show()
 		title.text = "Win"
+		GlobalSounds.get_node("Music").stop()
 		
 func selected_target(target_on: bool):
 	target = target_on
@@ -611,6 +618,7 @@ func skill_consumed():
 	enemy_action_phase()
 
 func restart_game():
+	GlobalSounds.get_node("Music").play()
 	id_player = 0
 	progress_bar.value = 0
 	start_num = 0

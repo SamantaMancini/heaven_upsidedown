@@ -1,5 +1,6 @@
 extends Node2D
 
+signal end_tutorial
 signal update_global_state(power: float)
 signal remove_global_state(power: float)
 signal add_shield_enemy(shield: float)
