@@ -2,8 +2,8 @@ extends Node2D
 @onready var v_box_container: VBoxContainer = $CanvasLayer/Control/VBoxContainer
 @onready var progress_bar: ProgressBar = $CanvasLayer/Control/ProgressBar
 @onready var h_box_container: HBoxContainer = $CanvasLayer/Control/ProgressBar/HBoxContainer
-@onready var _0: Label = $"CanvasLayer/Control/ProgressBar/HBoxContainer/0"
-@onready var _0s: ProgressBar = $"CanvasLayer/Control/ProgressBar/0s"
+@onready var l0: Label = $"CanvasLayer/Control/ProgressBar/HBoxContainer/0"
+@onready var l0s: ProgressBar = $"CanvasLayer/Control/ProgressBar/0s"
 @onready var name_enemies: Label = $"CanvasLayer/Control/VBoxContainer/Name Enemies"
 @onready var turn: Label = $CanvasLayer/Control/VBoxContainer/Turn
 @onready var name_char: Label = $CanvasLayer/Control/Panel/HBoxContainer/VBoxContainer/Name
@@ -48,8 +48,8 @@ var action_selected = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	_0.text = str(start_num)
-	_0s.value = shields
+	l0.text = str(start_num)
+	l0s.value = shields
 	name_enemies.text = enemies[id_enemy].stats.name_char
 	stats_player()
 	change_color_player(0, Color.YELLOW)
@@ -82,8 +82,8 @@ func _process(delta: float) -> void:
 		
 	battle_end_conditions()
 	stats_player()
-	_0.text = str(start_num)
-	_0s.value = shields
+	l0.text = str(start_num)
+	l0s.value = shields
 
 func start_game():
 	player_turn()
@@ -333,7 +333,7 @@ func blobby_attack(enemy):
 		enemy.stats.stamina += 3
 		
 func remove_points(damage: float):
-	if shields > 0 and _0s.modulate == Color.WHITE:
+	if shields > 0 and l0s.modulate == Color.WHITE:
 		if damage > shields:
 			var damage_overflow = damage - shields
 			shields = 0
@@ -358,7 +358,7 @@ func update_button():
 	
 	
 func add_points(damage: float):
-	if shields > 0 and _0s.modulate == Color.DARK_GREEN:
+	if shields > 0 and l0s.modulate == Color.DARK_GREEN:
 		if damage > shields:
 			var damage_overflow = damage - shields
 			shields = 0
@@ -372,16 +372,16 @@ func add_points(damage: float):
 			
 
 func add_shield(shield: float):
-		if _0s.modulate != Color.WHITE:
+		if l0s.modulate != Color.WHITE:
 			shields = shield
-			_0s.modulate = Color.WHITE
+			l0s.modulate = Color.WHITE
 		else:
 			shields += shield
 
 func add_shield_enemy(shield: float):
-	if shields >= 0 and _0s.modulate == Color.WHITE:
+	if shields >= 0 and l0s.modulate == Color.WHITE:
 		shields = shield
-		_0s.modulate = Color.DARK_GREEN
+		l0s.modulate = Color.DARK_GREEN
 	else:
 		shields += shield
 
@@ -421,7 +421,7 @@ func _on_start_pressed() -> void:
 		
 func _on_dance_pressed() -> void:
 	GlobalSounds.get_node("SFX").play()
-	var skill_sta = null
+	#var skill_sta = null
 	GlobalEvent.combination.emit(player_emotions)
 	player_emotions = ""
 	start_off(true)
