@@ -10,12 +10,6 @@ func _on_start_pressed() -> void:
 	GlobalSounds.get_node("SFX").play()
 
 
-func _on_quit_pressed() -> void:
-	GlobalSounds.get_node("SFX").play()
-	await get_tree().create_timer(1).timeout
-	get_tree().quit()
-	
-
 func _on_settings_pressed() -> void:
 	v_box_container.hide()
 	v_box_container_2.show()
@@ -27,4 +21,9 @@ func _on_back_pressed() -> void:
 	v_box_container.show()
 	v_box_container_2.hide()
 	title.text = "Heaven UpsideDown"
+	GlobalSounds.get_node("SFX").play()
+
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()
 	GlobalSounds.get_node("SFX").play()
